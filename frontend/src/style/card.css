@@ -1,0 +1,24 @@
+.card {
+  width: "24rem";
+  background-color: black ;
+  color: white ;
+}
+
+.card-img {
+  height: 300px; 
+  overflow: hidden;
+}
+
+
+.card-img img {
+  transition: transform .5s ease;
+}
+
+
+.card-img:hover img {
+  transform: scale(1.2);
+}
+
+
+  
+
