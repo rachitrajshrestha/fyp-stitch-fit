@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import NavBar from "../component/Navbar";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Card from "../component/Card";
 import Footer from "../component/Footer";
+import Card from "../component/Card";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -38,8 +38,10 @@ const Home = () => {
   return (
     <div>
       <NavBar theme={theme} setTheme={setTheme} />
-      <Card></Card>
+      {/* <Card></Card> */}
+      {/* <ProductCard></ProductCard> */}
       {/* <Footer></Footer> */}
+      <Card></Card>
       <div>Home</div>
     </div>
   );

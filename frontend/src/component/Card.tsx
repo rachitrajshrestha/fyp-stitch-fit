@@ -1,24 +1,77 @@
-import React from "react";
-import cardProfile from "../assets/card1.png";
-import "../style/Card.css";
+import React, { useEffect, useState } from "react";
 
-const Card: React.FC = () => {
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+  imageUrl: string;
+}
+
+const ProductCard: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    fetch("http://localhost:8081/products")
+      .then((res) => res.json())
+      .then((data) => {
+        setProducts(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching products:", err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading)
+    return (
+      <div className="flex justify-center items-center min-h-screen text-gray-700">
+        <p>Loading products...</p>
+      </div>
+    );
+
   return (
-    <div className="card1" style={{ width: "24rem", height: "28rem" }}>
-      <div className="card-img rounded-0">
-        <img src={cardProfile} className="card-img-top" alt="..."></img>
-      </div>
-      <div className="card-body">
-        <h5 className="card-title">Card title</h5>
-        <p className="card-text">
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
-        </p>
-        <a href="#" className="btn btn-secondary w-5">
-          Buy Now
-        </a>
-      </div>
+    <div className="container mx-auto px-4 py-8 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      {products.length > 0 ? (
+        products.map((product) => (
+          <div
+            key={product.id}
+            className="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 flex flex-col"
+          >
+            <div className="h-48 overflow-hidden">
+              <img
+                src={product.imageUrl}
+                alt={product.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="p-4 flex flex-col justify-between">
+              <div>
+                <h2 className="text-xl font-semibold text-gray-800">
+                  {product.name}
+                </h2>
+                <p className="text-sm text-gray-600 mb-4">
+                  {product.description}
+                </p>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-lg font-bold text-red-500">
+                  ${product.price.toFixed(2)}
+                </span>
+                <button className="bg-red-500 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-red-600 transition">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+        ))
+      ) : (
+        <div className="text-center text-gray-500">No products found.</div>
+      )}
     </div>
   );
 };
-export default Card;
+
+export default ProductCard;
