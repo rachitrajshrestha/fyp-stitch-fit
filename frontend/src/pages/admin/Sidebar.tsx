@@ -6,15 +6,12 @@ export function AdminSidebar() {
   const [currentPath, setCurrentPath] = useState("");
 
   useEffect(() => {
-    // Set the current path when component mounts
     setCurrentPath(window.location.pathname);
 
-    // Update path on navigation
     const handleRouteChange = () => {
       setCurrentPath(window.location.pathname);
     };
 
-    // Listen for popstate event (browser back/forward)
     window.addEventListener("popstate", handleRouteChange);
 
     return () => {
@@ -66,7 +63,7 @@ export function AdminSidebar() {
           <path d="M17 2H7a1 1 0 0 0-1 1v5h12V3a1 1 0 0 0-1-1Z" />
         </svg>
       ),
-      href: "/admin/add-product",
+      href: "/admin/addProduct",
       active: currentPath === "/admin/addProduct",
     },
     {

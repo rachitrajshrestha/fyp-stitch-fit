@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AdminSidebar } from "./Sidebar";
+import AdminLayout from "./AdminLayout";
 
 const ProductForm = () => {
   const [product, setProduct] = useState({
@@ -47,8 +48,7 @@ const ProductForm = () => {
   };
 
   return (
-    <>
-      <AdminSidebar />
+    <AdminLayout>
       <div className="rounded-lg border border-gray-200 bg-white p-6 max-w-lg mx-auto">
         <h2 className="text-2xl font-bold mb-4">Add New Product</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -133,7 +133,7 @@ const ProductForm = () => {
           </div>
         </form>
       </div>
-    </>
+    </AdminLayout>
   );
 };
 

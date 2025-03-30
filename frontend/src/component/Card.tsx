@@ -25,6 +25,14 @@ const ProductCard: React.FC = () => {
       });
   }, []);
 
+  const addToCart = (productId: number) => {
+    fetch("http://localhost:8081/cart", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: 1, productId }),
+    }).then(() => alert("Product added to cart!"));
+  };
+
   if (loading)
     return (
       <div className="flex justify-center items-center min-h-screen text-gray-700">
@@ -60,9 +68,13 @@ const ProductCard: React.FC = () => {
                 <span className="text-lg font-bold text-red-500">
                   ${product.price.toFixed(2)}
                 </span>
-                <button className="bg-red-500 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-red-600 transition">
+                <button
+                  onClick={() => addToCart(product.id)}
+                  className="bg-blue-500 text-white px-4 py-2 rounded"
+                >
                   Add to Cart
                 </button>
+                ;
               </div>
             </div>
           </div>
