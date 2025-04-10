@@ -33,7 +33,7 @@ const Home = () => {
   useEffect(() => {
     fetchUser();
   }, []);
-  const [theme, setTheme] = useState<"light" | "dark">("light"); // Import useState if needed
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
   return (
     <div>
@@ -42,7 +42,7 @@ const Home = () => {
       {/* <ProductCard></ProductCard> */}
       {/* <Footer></Footer> */}
       <Card></Card>
-      <div>Home</div>
+      <Footer></Footer>
     </div>
   );
 };

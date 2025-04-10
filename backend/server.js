@@ -5,6 +5,7 @@ const { sequelize } = require("./models");
 const authRouter = require("./routes/authRoutes");
 const productRouter = require("./routes/productRoutes");
 const cartRouter = require("./routes/cartRoutes");
+const measurementRoutes = require("./routes/measurementRoutes");
 
 const app = express();
 const SERVER_PORT = process.env.SERVER_PORT;
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/products", productRouter);
 app.use("/cart", cartRouter);
+app.use("/measurements", measurementRoutes);
 
 app.listen(SERVER_PORT, async () => {
   console.log(`App is listening on PORT ${SERVER_PORT}`);

@@ -55,8 +55,6 @@ const getProducts = async (req, res) => {
   }
 };
 
-module.exports = { addProduct, getProducts };
-
 const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -95,6 +93,7 @@ const updateProduct = async (req, res) => {
 
 module.exports = {
   getAllProducts,
+  getProducts,
   getProductById,
   addProduct,
   deleteProduct,

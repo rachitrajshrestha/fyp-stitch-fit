@@ -4,7 +4,13 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
     static associate(models) {
-      // Define associations here if needed
+      Product.belongsToMany(models.Cart, {
+        through: models.CartItem,
+        foreignKey: "productId",
+        otherKey: "cartId",
+      });
+
+      Product.hasMany(models.CartItem, { foreignKey: "productId" });
     }
   }
 

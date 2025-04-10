@@ -5,6 +5,7 @@ import logo_dark from "../assets/stitch_fit_white_logo.png";
 import logo_light from "../assets/stitch_fit_black_logo.png";
 import toggle_light from "../assets/night.png";
 import toggle_dark from "../assets/day.png";
+import { Link } from "react-router-dom";
 
 interface NavbarProps {
   theme: "light" | "dark";
@@ -24,10 +25,24 @@ const Navbar: React.FC<NavbarProps> = ({ theme, setTheme }) => {
         className="logo"
       />
       <ul>
-        <li>Home</li>
-        <li>About</li>
-        <li>Services</li>
-        <li>Contact</li>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/product">Produts</Link>
+        </li>
+        <li>
+          <Link to="/">Design</Link>
+        </li>
+        <li>
+          <Link to="/">Mesaurements</Link>
+        </li>
+        <li>
+          <Link to="/">About</Link>
+        </li>
+        <li>
+          <Link to="/">Contact us</Link>
+        </li>
       </ul>
       <div className="search-box">
         <input type="text" placeholder="Search" />
@@ -36,12 +51,12 @@ const Navbar: React.FC<NavbarProps> = ({ theme, setTheme }) => {
           alt="Search Icon"
         />
       </div>
-      <img
+      {/* <img
         onClick={toggle_mode}
         src={theme == "light" ? toggle_light : toggle_dark}
         alt=""
         className="theme-toggle"
-      />
+      /> */}
     </div>
   );
 };

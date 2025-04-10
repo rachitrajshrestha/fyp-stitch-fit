@@ -1,18 +1,37 @@
+"use strict";
+const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
-  const Cart = sequelize.define("Cart", {
-    userId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+  class Cart extends Model {
+    static associate(models) {
+      Cart.belongsTo(models.User, { foreignKey: "userId" });
+
+      Cart.belongsToMany(models.Product, {
+        through: models.CartItem,
+        foreignKey: "cartId",
+        otherKey: "productId",
+      });
+
+      Cart.hasMany(models.CartItem, { foreignKey: "cartId" });
+    }
+  }
+
+  Cart.init(
+    {
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+      },
     },
-    productId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    quantity: {
-      type: DataTypes.INTEGER,
-      defaultValue: 1,
-    },
-  });
+    {
+      sequelize,
+      modelName: "Cart",
+    }
+  );
 
   return Cart;
 };

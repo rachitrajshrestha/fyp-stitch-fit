@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const { connectToDatabase } = require("../lib/db");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+const verifyToken = require("../middleware/verifyToken");
 
 router.post("/register", async (req, res) => {
   const { username, email, phone, password } = req.body;
@@ -62,22 +63,6 @@ router.post("/login", async (req, res) => {
     return res.status(500).json(err);
   }
 });
-
-const verifyToken = (req, res, next) => {
-  try {
-    const authHeader = req.headers["authorization"];
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(403).json({ message: "No token provided" });
-    }
-    const token = authHeader.split(" ")[1]; // Correct splitting
-
-    const decoded = jwt.verify(token, process.env.JWT_KEY); // Fix process.JWT_KEY -> process.env.JWT_KEY
-    req.userId = decoded.id;
-    next();
-  } catch (err) {
-    return res.status(500).json({ message: "Invalid or expired token" });
-  }
-};
 
 router.get("/home", verifyToken, async (req, res) => {
   try {

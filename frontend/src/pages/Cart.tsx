@@ -15,9 +15,33 @@ const Cart: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:8081/cart/1") // Assume user ID = 1 for now
-      .then((res) => res.json())
-      .then((data) => setCart(data))
+    const token = localStorage.getItem("token");
+
+    fetch(`http://localhost:8081/cart/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Unauthorized or failed to fetch");
+        return res.json();
+      })
+      .then((data) => {
+        console.log("Raw cart data from backend:", data);
+        const transformed = data.map((item: any) => ({
+          id: item.id,
+          quantity: item.quantity,
+          product: {
+            id: item.Product.id,
+            name: item.Product.name,
+            price: item.Product.price,
+            imageUrl: item.Product.imageUrl,
+          },
+        }));
+        setCart(transformed);
+      })
       .catch((err) => console.error("Error fetching cart:", err));
   }, []);
 

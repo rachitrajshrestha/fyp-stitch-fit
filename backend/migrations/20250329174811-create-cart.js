@@ -18,27 +18,15 @@ module.exports = {
         },
         onDelete: "CASCADE",
       },
-      productId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Products",
-          key: "id",
-        },
-        onDelete: "CASCADE",
-      },
-      quantity: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 1,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
   },

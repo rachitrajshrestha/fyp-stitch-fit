@@ -44,6 +44,16 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
+// const { User, Product, Measurement } = db;
+
+// if (User && Product && Measurement) {
+//   User.hasMany(Measurement, { foreignKey: "userId" });
+//   Product.hasMany(Measurement, { foreignKey: "productId" });
+
+//   Measurement.belongsTo(User, { foreignKey: "userId" });
+//   Measurement.belongsTo(Product, { foreignKey: "productId" });
+// }
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
