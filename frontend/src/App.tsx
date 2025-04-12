@@ -10,6 +10,8 @@ import MeasurementForm from "./pages/measurement";
 import ProductPage from "./pages/Product-Page";
 import Navbar from "./component/Navbar";
 import ProductDescription from "./pages/Product-Description";
+import AddressForm from "./pages/AddressDetails";
+import AboutUs from "./pages/aboutUs";
 const App: React.FC = () => {
   return (
     <>
@@ -28,25 +30,18 @@ const App: React.FC = () => {
           <Route path="/products/:productId" element={<ProductDescription />} />
           <Route path="/cart" element={<Cart />}></Route>
           <Route
-            path="/measurement"
+            path="/measurements"
             element={
               <MeasurementForm
-                productId={undefined}
-                userId={undefined}
-                onSubmitSuccess={undefined}
+                userId={0}
+                onSubmitSuccess={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
               />
             }
           ></Route>
-          {/* <Route
-            path="/measurement-form/:productId"
-            element={
-              <MeasurementForm
-                userId={undefined}
-                onSubmitSuccess={undefined}
-                productId={undefined}
-              />
-            }
-          /> */}
+          <Route path="/add-address" element={<AddressForm />} />
+          <Route path="/about" element={<AboutUs />} />
 
           <Route path="/admin/" element={<Dashboard />}></Route>
           <Route path="/admin/dashboard" element={<Dashboard />}></Route>

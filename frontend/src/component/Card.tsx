@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 interface Product {
+  imageUrl: string;
   id: number;
   name: string;
   price: number;
@@ -48,7 +49,7 @@ export default function ProductList() {
             <div className="rounded-lg overflow-hidden transition-all duration-200 hover:shadow-lg">
               <div className="relative h-48 w-full bg-gray-100 overflow-hidden">
                 <img
-                  src={product.image || "/placeholder.svg"}
+                  src={`http://localhost:8081/${product.imageUrl}`}
                   alt={product.name}
                   className="object-cover transition-transform duration-300 hover:scale-110"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"

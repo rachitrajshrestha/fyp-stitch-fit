@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 
-const MeasurementForm = ({ productId, userId, onSubmitSuccess }) => {
+interface MeasurementFormProps {
+  userId: number;
+  onSubmitSuccess: () => void;
+}
+
+const MeasurementForm: React.FC<MeasurementFormProps> = ({
+  userId,
+  onSubmitSuccess,
+}) => {
   const [formData, setFormData] = useState({
     length: "",
     breadth: "",
@@ -16,18 +24,21 @@ const MeasurementForm = ({ productId, userId, onSubmitSuccess }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const measurementData = { ...formData, userId, productId };
+    // Payload to send to the backend
+    const measurementData = { ...formData, userId };
 
     try {
       const response = await fetch("http://localhost:8081/measurements", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(measurementData),
       });
 
       if (response.ok) {
         alert("Measurement added successfully!");
-        onSubmitSuccess(); // Redirect or update UI
+        onSubmitSuccess(); // Trigger any function to update the UI or navigate
       } else {
         alert("Error adding measurement");
       }
@@ -46,7 +57,7 @@ const MeasurementForm = ({ productId, userId, onSubmitSuccess }) => {
             <input
               type="number"
               name={field}
-              value={formData[field]}
+              value={formData[field as keyof typeof formData]}
               onChange={handleChange}
               className="w-full p-2 border rounded-md"
               required

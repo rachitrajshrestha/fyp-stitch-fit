@@ -11,6 +11,8 @@ const ProductForm = () => {
     imageUrl: "",
   });
 
+  const [imageFile, setImageFile] = useState<File | null>(null);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -25,12 +27,36 @@ const ProductForm = () => {
   //     }
   //   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+    }
+  };
+
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   const response = await fetch("http://localhost:8081/products/", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify(product),
+  //   });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("name", product.name);
+    formData.append("price", product.price);
+    formData.append("description", product.description);
+    formData.append("category", product.category);
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
+
     const response = await fetch("http://localhost:8081/products/", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(product),
+      body: formData,
     });
 
     if (response.ok) {
@@ -112,11 +138,9 @@ const ProductForm = () => {
               Product Image
             </label>
             <input
-              type="text"
-              name="imageUrl"
-              placeholder="Image URL"
-              value={product.imageUrl}
-              onChange={handleChange}
+              type="file"
+              name="image/*"
+              onChange={handleImageChange}
               className="w-full p-2 border rounded-md"
               required
             />

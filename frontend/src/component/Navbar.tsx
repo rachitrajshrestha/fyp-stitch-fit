@@ -1,3 +1,8 @@
+"use client";
+
+import type React from "react";
+
+import { useState } from "react";
 import "../style/Navbar.css";
 import dark_search_icon from "../assets/search-w.png";
 import light_search_icon from "../assets/search-b.png";
@@ -13,50 +18,72 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ theme, setTheme }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const toggle_mode = () => {
-    theme == "light" ? setTheme("dark") : setTheme("light");
+    theme === "light" ? setTheme("dark") : setTheme("light");
+  };
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
   };
 
   return (
-    <div className="navbar">
-      <img
-        src={theme == "light" ? logo_light : logo_dark}
-        alt="Logo"
-        className="logo"
-      />
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/product">Produts</Link>
-        </li>
-        <li>
-          <Link to="/">Design</Link>
-        </li>
-        <li>
-          <Link to="/">Mesaurements</Link>
-        </li>
-        <li>
-          <Link to="/">About</Link>
-        </li>
-        <li>
-          <Link to="/">Contact us</Link>
-        </li>
-      </ul>
-      <div className="search-box">
-        <input type="text" placeholder="Search" />
-        <img
-          src={theme == "light" ? dark_search_icon : light_search_icon}
-          alt="Search Icon"
-        />
+    <div className={`navbar ${theme === "dark" ? "dark" : ""}`}>
+      <div className="navbar-container">
+        <div className="navbar-left">
+          <img
+            src={theme === "light" ? logo_light : logo_dark}
+            alt="Logo"
+            className="logo"
+          />
+          <div
+            className={`hamburger ${menuOpen ? "active" : ""}`}
+            onClick={toggleMenu}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+
+        <ul className={menuOpen ? "active" : ""}>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/product">Products</Link>
+          </li>
+          <li>
+            <Link to="/">Design</Link>
+          </li>
+          <li>
+            <Link to="/">Measurements</Link>
+          </li>
+          <li>
+            <Link to="/">About</Link>
+          </li>
+          <li>
+            <Link to="/">Contact us</Link>
+          </li>
+        </ul>
+
+        <div className="navbar-right">
+          <div className="search-box">
+            <input type="text" placeholder="Search" />
+            <img
+              src={theme === "light" ? dark_search_icon : light_search_icon}
+              alt="Search Icon"
+            />
+          </div>
+          <img
+            onClick={toggle_mode}
+            src={theme === "light" ? toggle_light : toggle_dark}
+            alt="Theme toggle"
+            className="theme-toggle"
+          />
+        </div>
       </div>
-      {/* <img
-        onClick={toggle_mode}
-        src={theme == "light" ? toggle_light : toggle_dark}
-        alt=""
-        className="theme-toggle"
-      /> */}
     </div>
   );
 };

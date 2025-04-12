@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface CartItem {
   id: number;
@@ -13,6 +14,7 @@ interface CartItem {
 
 const Cart: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -29,17 +31,19 @@ const Cart: React.FC = () => {
         return res.json();
       })
       .then((data) => {
-        console.log("Raw cart data from backend:", data);
-        const transformed = data.map((item: any) => ({
+        const products = data[0]?.Products || [];
+
+        const transformed = products.map((item: any) => ({
           id: item.id,
-          quantity: item.quantity,
+          quantity: item.CartItem.quantity,
           product: {
-            id: item.Product.id,
-            name: item.Product.name,
-            price: item.Product.price,
-            imageUrl: item.Product.imageUrl,
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            imageUrl: item.imageUrl.replace("\\", "/"),
           },
         }));
+
         setCart(transformed);
       })
       .catch((err) => console.error("Error fetching cart:", err));
@@ -51,9 +55,19 @@ const Cart: React.FC = () => {
       .catch((err) => console.error("Error removing item:", err));
   };
 
+  const handleCheckout = () => {
+    navigate("/add-address");
+  };
+
+  const totalPrice = cart.reduce(
+    (acc, item) => acc + item.product.price * item.quantity,
+    0
+  );
+
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold">Shopping Cart</h2>
+      <h2 className="text-2xl font-bold mb-4">Shopping Cart</h2>
+
       {cart.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
@@ -66,19 +80,31 @@ const Cart: React.FC = () => {
               <img
                 src={item.product.imageUrl}
                 alt={item.product.name}
-                className="w-16 h-16"
+                className="w-16 h-16 object-cover"
               />
-              <span>{item.product.name}</span>
-              <span>${item.product.price}</span>
-              <span>Qty: {item.quantity}</span>
+              <span className="w-1/4">{item.product.name}</span>
+              <span className="w-1/6">${item.product.price.toFixed(2)}</span>
+              <span className="w-1/6">Qty: {item.quantity}</span>
               <button
                 onClick={() => removeFromCart(item.id)}
-                className="bg-red-500 px-3 py-1 text-white"
+                className="bg-red-500 px-3 py-1 text-white rounded"
               >
                 Remove
               </button>
             </div>
           ))}
+
+          <div className="mt-6 text-right">
+            <h3 className="text-xl font-semibold mb-2">
+              Total: ${totalPrice.toFixed(2)}
+            </h3>
+            <button
+              onClick={handleCheckout}
+              className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded"
+            >
+              Checkout
+            </button>
+          </div>
         </div>
       )}
     </div>

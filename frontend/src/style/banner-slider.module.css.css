@@ -1,0 +1,174 @@
+.sliderContainer {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0.5rem;
+  }
+  
+  .sliderTrack {
+    display: flex;
+    transition: transform 500ms ease-in-out;
+  }
+  
+  .slide {
+    position: relative;
+    min-width: 100%;
+  }
+  
+  .slideImage {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+  }
+  
+  @media (min-width: 640px) {
+    .slideImage {
+      height: 400px;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .slideImage {
+      height: 500px;
+    }
+  }
+  
+  .slideOverlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  
+  .slideContent {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    color: white;
+  }
+  
+  @media (min-width: 768px) {
+    .slideContent {
+      padding: 2rem;
+    }
+  }
+  
+  .slideTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .slideTitle {
+      font-size: 1.875rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .slideTitle {
+      font-size: 2.25rem;
+    }
+  }
+  
+  .slideDescription {
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    max-width: 28rem;
+  }
+  
+  @media (min-width: 768px) {
+    .slideDescription {
+      font-size: 1rem;
+    }
+  }
+  
+  .ctaButton {
+    display: inline-block;
+    background-color: white;
+    color: black;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    transition: background-color 0.2s;
+  }
+  
+  .ctaButton:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+  
+  .navButton {
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    height: 2.5rem;
+    width: 2.5rem;
+    transform: translateY(-50%);
+    border-radius: 9999px;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .navButton:hover {
+    background-color: white;
+  }
+  
+  .prevButton {
+    left: 1rem;
+  }
+  
+  .nextButton {
+    right: 1rem;
+  }
+  
+  .arrow {
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 4px;
+  }
+  
+  .arrowLeft {
+    transform: rotate(135deg);
+    margin-right: -4px;
+  }
+  
+  .arrowRight {
+    transform: rotate(-45deg);
+    margin-left: -4px;
+  }
+  
+  .indicators {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    z-index: 10;
+    display: flex;
+    transform: translateX(-50%);
+    gap: 0.5rem;
+  }
+  
+  .indicator {
+    height: 0.5rem;
+    width: 0.5rem;
+    border-radius: 9999px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .indicatorActive {
+    width: 1rem;
+    background-color: white;
+  }
+  

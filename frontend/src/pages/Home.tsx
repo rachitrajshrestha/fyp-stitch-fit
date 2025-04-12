@@ -41,6 +41,8 @@ const Home = () => {
       {/* <Card></Card> */}
       {/* <ProductCard></ProductCard> */}
       {/* <Footer></Footer> */}
+
+      {/* <Slider slides={[]}></Slider> */}
       <Card></Card>
       <Footer></Footer>
     </div>

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import Navbar from "../component/Navbar";
 
 export interface Product {
   id: number;
@@ -16,11 +17,10 @@ const ProductDescription: React.FC = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [quantity, setQuantity] = useState<number>(1);
 
   useEffect(() => {
-    // Ensure productId is converted to a number
     const id = Number(productId);
-
     if (!id) {
       console.error("Invalid product ID:", productId);
       setLoading(false);
@@ -42,51 +42,6 @@ const ProductDescription: React.FC = () => {
       });
   }, [productId]);
 
-  // const addToCart = (productId: number) => {
-  //   fetch("http://localhost:8081/cart", {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify({ userId: 1, productId }),
-  //   }).then(() => alert("Product added to cart!"));
-  // };
-
-  // const addToCart = (productId: number) => {
-  //   const token = localStorage.getItem("token");
-
-  //   fetch("http://localhost:8081/cart", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //     body: JSON.stringify({ productId }), // No userId
-  //   }).then(() => alert("Product added to cart!"));
-  // };
-
-  // const addToCart = async () => {
-  //   if (!product) return;
-
-  //   try {
-  //     const response = await fetch("http://localhost:8081/cart", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         productId: product.id,
-  //         quantity: 1, // Default quantity to 1
-  //       }),
-  //     });
-
-  //     if (!response.ok) throw new Error("Failed to add product to cart");
-
-  //     // Redirect to cart page after adding
-  //     navigate("/cart");
-  //   } catch (error) {
-  //     console.error("Error adding to cart:", error);
-  //   }
-  // };
-
   const addToCart = async () => {
     if (!product) return;
 
@@ -101,7 +56,7 @@ const ProductDescription: React.FC = () => {
         },
         body: JSON.stringify({
           productId: product.id,
-          quantity: 1,
+          quantity: quantity,
         }),
       });
 
@@ -113,39 +68,109 @@ const ProductDescription: React.FC = () => {
     }
   };
 
-  if (loading) {
+  if (loading)
     return (
       <p className="text-center text-gray-500">Loading product details...</p>
     );
-  }
-
-  if (!product) {
+  if (!product)
     return <p className="text-center text-gray-500">Product not found.</p>;
-  }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-col md:flex-row gap-8">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full md:w-1/2 rounded-lg shadow-lg"
-        />
-        <div className="md:w-1/2">
-          <h1 className="text-3xl font-bold text-gray-800">{product.name}</h1>
-          <p className="text-lg text-gray-600 my-4">{product.description}</p>
-          <p className="text-xl font-semibold text-red-500">
-            ${product.price.toFixed(2)}
-          </p>
-          <button
-            onClick={() => addToCart()}
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-          >
-            Add to Cart
-          </button>
+    <>
+      <Navbar
+        theme={"light"}
+        setTheme={function (theme: "light" | "dark"): void {
+          throw new Error("Function not implemented.");
+        }}
+      />
+      <main className="container mx-auto px-4 py-8">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="md:flex">
+            <div className="md:w-1/2">
+              <div className="relative h-96 md:h-full">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="object-cover w-full h-full"
+                />
+              </div>
+            </div>
+            <div className="md:w-1/2 p-6 md:p-8">
+              <div className="text-sm text-green-600 font-semibold mb-2">
+                In Stock
+              </div>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                {product.name}
+              </h1>
+              <div className="flex items-center mb-4">
+                <div className="flex text-yellow-400">
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                </div>
+                <span className="ml-2 text-gray-600 text-sm">
+                  (121 reviews)
+                </span>
+              </div>
+              <div className="text-3xl font-bold text-gray-900 mb-6">
+                Rs {product.price.toFixed(2)}
+              </div>
+              <p className="text-gray-600 mb-6">{product.description}</p>
+              <div className="mb-6">
+                <h2 className="font-semibold text-gray-900 mb-2">
+                  Key Features:
+                </h2>
+                <ul className="list-disc pl-5 text-gray-600 space-y-1">
+                  <li>Active noise cancellation</li>
+                  <li>30-hour battery life</li>
+                  <li>Bluetooth 5.0 connectivity</li>
+                  <li>Built-in microphone for calls</li>
+                  <li>Comfortable memory foam ear cushions</li>
+                </ul>
+              </div>
+              <div className="mb-6">
+                <h2 className="font-semibold text-gray-900 mb-2">Color:</h2>
+                <div className="flex space-x-2">
+                  <div className="w-8 h-8 rounded-full bg-black border-2 border-gray-300 cursor-pointer"></div>
+                  <div className="w-8 h-8 rounded-full bg-white border-2 border-gray-300 cursor-pointer"></div>
+                  <div className="w-8 h-8 rounded-full bg-blue-600 border-2 border-gray-300 cursor-pointer"></div>
+                </div>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex border rounded-md">
+                  <button
+                    className="px-4 py-2 bg-gray-100 text-gray-600"
+                    onClick={() => setQuantity((prev) => Math.max(prev - 1, 1))}
+                  >
+                    -
+                  </button>
+                  <input
+                    type="text"
+                    value={quantity}
+                    readOnly
+                    className="w-12 text-center border-x"
+                  />
+                  <button
+                    className="px-4 py-2 bg-gray-100 text-gray-600"
+                    onClick={() => setQuantity((prev) => prev + 1)}
+                  >
+                    +
+                  </button>
+                </div>
+                <button
+                  onClick={addToCart}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-md"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </main>
+    </>
   );
 };
 
