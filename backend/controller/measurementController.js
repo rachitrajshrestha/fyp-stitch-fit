@@ -1,9 +1,10 @@
 const { Measurement } = require("../models");
 
 // Create new measurement
-exports.createMeasurement = async (req, res) => {
+const createMeasurement = async (req, res) => {
   try {
-    const { userId, productId, length, breadth, waist, arms, legs } = req.body;
+    const userId = req.userId;
+    const { productId, length, breadth, waist, arms, legs } = req.body;
     const measurement = await Measurement.create({
       userId,
       productId,
@@ -22,7 +23,7 @@ exports.createMeasurement = async (req, res) => {
 };
 
 // Get all measurements
-exports.getMeasurements = async (req, res) => {
+const getMeasurements = async (req, res) => {
   try {
     const measurements = await Measurement.findAll();
     return res.json(measurements);
@@ -30,4 +31,9 @@ exports.getMeasurements = async (req, res) => {
     console.error("Error fetching measurements:", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
+};
+
+module.exports = {
+  createMeasurement,
+  getMeasurements,
 };

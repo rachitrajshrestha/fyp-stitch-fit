@@ -2,7 +2,7 @@ const { Cart, Product, CartItem } = require("../models");
 
 const getCartItems = async (req, res) => {
   try {
-    const userId = req.userId; // ✅ define it properly here
+    const userId = req.userId;
 
     if (!userId) {
       return res.status(400).json({ error: "userId is required" });
@@ -19,7 +19,7 @@ const getCartItems = async (req, res) => {
     });
 
     // console.log("User ID:", userId);
-    res.json(cartItems); // ✅ send the result
+    res.json(cartItems);
   } catch (error) {
     console.log(error);
     res

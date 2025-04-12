@@ -28,7 +28,8 @@ const getProductById = async (req, res) => {
 
 const addProduct = async (req, res) => {
   try {
-    const { name, price, description, category, imageUrl } = req.body;
+    const { name, price, description, category } = req.body;
+    const imageUrl = req.file ? `uploads/${req.file.filename}` : null;
 
     const newProduct = await Product.create({
       name,
