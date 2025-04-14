@@ -56,7 +56,7 @@ const Cart: React.FC = () => {
   };
 
   const handleCheckout = () => {
-    navigate("/add-address");
+    navigate("/add-address", { state: { totalPrice } });
   };
 
   const totalPrice = cart.reduce(

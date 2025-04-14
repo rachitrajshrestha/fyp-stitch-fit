@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../style/Navbar.css";
 import dark_search_icon from "../assets/search-w.png";
 import light_search_icon from "../assets/search-b.png";
@@ -10,7 +10,9 @@ import logo_dark from "../assets/stitch_fit_white_logo.png";
 import logo_light from "../assets/stitch_fit_black_logo.png";
 import toggle_light from "../assets/night.png";
 import toggle_dark from "../assets/day.png";
-import { Link } from "react-router-dom";
+import profile_icon from "../assets/profile.png";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 interface NavbarProps {
   theme: "light" | "dark";
@@ -19,6 +21,28 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ theme, setTheme }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      axios
+        .get("http://localhost:8081/auth/home", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          setUser(res.data.user); // 👈 Set user info here
+        })
+        .catch((err) => {
+          console.error("Failed to fetch user", err);
+          setUser(null);
+        });
+    }
+  }, []);
 
   const toggle_mode = () => {
     theme === "light" ? setTheme("dark") : setTheme("light");
@@ -26,6 +50,12 @@ const Navbar: React.FC<NavbarProps> = ({ theme, setTheme }) => {
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+    navigate("/login");
   };
 
   return (
@@ -82,6 +112,25 @@ const Navbar: React.FC<NavbarProps> = ({ theme, setTheme }) => {
             alt="Theme toggle"
             className="theme-toggle"
           />
+          <div className="profile-box">
+            {user ? (
+              <div className="dropdown">
+                <img
+                  src={profile_icon}
+                  alt="Profile"
+                  className="profile-icon"
+                />
+                <div className="dropdown-content">
+                  <span>{user.username}</span>
+                  <button onClick={handleLogout}>Logout</button>
+                </div>
+              </div>
+            ) : (
+              <Link to="/login" className="login-link">
+                Login
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -4,15 +4,33 @@ const { Measurement } = require("../models");
 const createMeasurement = async (req, res) => {
   try {
     const userId = req.userId;
-    const { productId, length, breadth, waist, arms, legs } = req.body;
+    const {
+      chest,
+      waist,
+      hips,
+      shoulderWidth,
+      sleeveLength,
+      inseam,
+      neck,
+      height,
+      legLength,
+      thighWidth,
+      calvesWidth,
+    } = req.body;
+
     const measurement = await Measurement.create({
       userId,
-      productId,
-      length,
-      breadth,
+      chest,
       waist,
-      arms,
-      legs,
+      hips,
+      shoulderWidth,
+      sleeveLength,
+      inseam,
+      neck,
+      height,
+      legLength,
+      thighWidth,
+      calvesWidth,
     });
 
     return res.status(201).json(measurement);

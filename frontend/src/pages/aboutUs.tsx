@@ -17,12 +17,11 @@ const AboutUs: React.FC = () => {
     e.preventDefault();
     console.log("Feedback submitted:", feedback);
 
-    // Optionally send to backend
-    // await fetch("http://localhost:8081/feedback", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(feedback),
-    // });
+    await fetch("http://localhost:8081/about", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(feedback),
+    });
 
     alert("Thanks for your feedback!");
     setFeedback({ name: "", email: "", message: "" });

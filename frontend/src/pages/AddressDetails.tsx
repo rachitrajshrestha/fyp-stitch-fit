@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const AddressForm: React.FC = () => {
+  const location = useLocation();
+  const totalPrice = location.state?.totalPrice;
+  console.log(location.state);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -111,6 +114,15 @@ const AddressForm: React.FC = () => {
           Submit Address
         </button>
       </form>
+
+      <button
+        onClick={() =>
+          navigate("/payment", { state: { totalAmount: totalPrice } })
+        }
+        className=""
+      >
+        Payment
+      </button>
     </div>
   );
 };

@@ -13,28 +13,18 @@ module.exports = (sequelize, DataTypes) => {
       userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: { model: "Users", key: "id" },
       },
-      length: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
-      },
-      breadth: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
-      },
-      waist: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
-      },
-      arms: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
-      },
-      legs: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
-      },
+      chest: DataTypes.FLOAT,
+      waist: DataTypes.FLOAT,
+      hips: DataTypes.FLOAT,
+      shoulderWidth: DataTypes.FLOAT,
+      sleeveLength: DataTypes.FLOAT,
+      inseam: DataTypes.FLOAT,
+      neck: DataTypes.FLOAT,
+      height: DataTypes.FLOAT,
+      legLength: DataTypes.FLOAT,
+      thighWidth: DataTypes.FLOAT,
+      calvesWidth: DataTypes.FLOAT,
     },
     {
       sequelize,
