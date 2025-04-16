@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../component/Navbar";
+import axios from "axios";
 
 export interface Product {
   id: number;
@@ -47,7 +48,17 @@ const ProductDescription: React.FC = () => {
 
     try {
       const token = localStorage.getItem("token");
+      const hasMeasurement = JSON.parse(
+        localStorage.getItem("hasMeasurement") || "false"
+      );
 
+      if (!hasMeasurement) {
+        // Redirect to measurement form with cart as redirect param
+        navigate("/measurements?redirect=cart");
+        return;
+      }
+
+      // Add to cart
       const response = await fetch("http://localhost:8081/cart", {
         method: "POST",
         headers: {

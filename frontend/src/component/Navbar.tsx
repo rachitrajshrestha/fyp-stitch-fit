@@ -21,7 +21,9 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ theme, setTheme }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,7 +37,7 @@ const Navbar: React.FC<NavbarProps> = ({ theme, setTheme }) => {
           },
         })
         .then((res) => {
-          setUser(res.data.user); // 👈 Set user info here
+          setUser(res.data.user);
         })
         .catch((err) => {
           console.error("Failed to fetch user", err);
@@ -52,10 +54,22 @@ const Navbar: React.FC<NavbarProps> = ({ theme, setTheme }) => {
     setMenuOpen(!menuOpen);
   };
 
+  const toggleDropdown = () => {
+    setDropdownOpen((prev) => !prev);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     setUser(null);
     navigate("/login");
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${searchQuery}`);
+      setSearchQuery("");
+    }
   };
 
   return (
@@ -88,24 +102,31 @@ const Navbar: React.FC<NavbarProps> = ({ theme, setTheme }) => {
             <Link to="/">Design</Link>
           </li>
           <li>
-            <Link to="/">Measurements</Link>
+            <Link to="/measurements">Measurements</Link>
           </li>
           <li>
-            <Link to="/">About</Link>
+            <Link to="/about">About</Link>
           </li>
           <li>
-            <Link to="/">Contact us</Link>
+            <Link to="/contact">Contact us</Link>
           </li>
         </ul>
 
         <div className="navbar-right">
-          <div className="search-box">
-            <input type="text" placeholder="Search" />
-            <img
-              src={theme === "light" ? dark_search_icon : light_search_icon}
-              alt="Search Icon"
+          <form className="search-box" onSubmit={handleSearch}>
+            <input
+              type="text"
+              placeholder="Search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
-          </div>
+            <button type="submit" className="search-button">
+              <img
+                src={theme === "light" ? dark_search_icon : light_search_icon}
+                alt="Search Icon"
+              />
+            </button>
+          </form>
           <img
             onClick={toggle_mode}
             src={theme === "light" ? toggle_light : toggle_dark}
@@ -114,16 +135,31 @@ const Navbar: React.FC<NavbarProps> = ({ theme, setTheme }) => {
           />
           <div className="profile-box">
             {user ? (
-              <div className="dropdown">
-                <img
-                  src={profile_icon}
-                  alt="Profile"
-                  className="profile-icon"
-                />
-                <div className="dropdown-content">
-                  <span>{user.username}</span>
-                  <button onClick={handleLogout}>Logout</button>
+              <div className="dropdown" onClick={toggleDropdown}>
+                <div className="profile-display">
+                  <img
+                    src={profile_icon}
+                    alt="Profile"
+                    className="profile-icon"
+                  />
+                  <span className="username">{user.username}</span>
                 </div>
+                {dropdownOpen && (
+                  <div className="dropdown-content">
+                    <Link to="/profile" className="dropdown-item">
+                      Profile
+                    </Link>
+                    <Link to="/orders" className="dropdown-item">
+                      My Orders
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="dropdown-item logout-btn"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <Link to="/login" className="login-link">

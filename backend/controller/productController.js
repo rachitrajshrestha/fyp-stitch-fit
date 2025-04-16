@@ -1,4 +1,5 @@
 const { Product } = require("../models");
+const { Op } = require("sequelize");
 
 const getAllProducts = async (req, res) => {
   try {
@@ -92,6 +93,25 @@ const updateProduct = async (req, res) => {
   }
 };
 
+const searchProducts = async (req, res) => {
+  const searchTerm = req.query.q;
+
+  try {
+    const results = await Product.findAll({
+      where: {
+        name: {
+          [Op.like]: `%${searchTerm}%`,
+        },
+      },
+    });
+
+    res.json(results);
+  } catch (error) {
+    console.error("Error searching products:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   getAllProducts,
   getProducts,
@@ -99,4 +119,5 @@ module.exports = {
   addProduct,
   deleteProduct,
   updateProduct,
+  searchProducts,
 };

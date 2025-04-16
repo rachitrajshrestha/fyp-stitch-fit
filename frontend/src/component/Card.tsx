@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 interface Product {
+  category: string;
   imageUrl: string;
   id: number;
   name: string;
@@ -46,7 +47,7 @@ export default function ProductList() {
             to={`/products/${product.id}`}
             className="block"
           >
-            <div className="rounded-lg overflow-hidden transition-all duration-200 hover:shadow-lg">
+            <div className="rounded-lg overflow-hidden transition-all duration-200 hover:shadow-lg border border-gray-200">
               <div className="relative h-48 w-full bg-gray-100 overflow-hidden">
                 <img
                   src={`http://localhost:8081/${product.imageUrl}`}
@@ -65,17 +66,12 @@ export default function ProductList() {
                   {product.name}
                 </h2>
                 <p className="text-gray-500 text-sm mb-3 line-clamp-2">
-                  {product.description}
+                  {product.category}
                 </p>
                 <div className="flex items-center justify-between">
                   <span className="text-lg font-bold">
                     Rs {product.price.toFixed(2)}
                   </span>
-                  {/* {product.oldPrice && (
-                    <span className="text-sm text-gray-500 line-through">
-                    Rs {product.oldPrice.toFixed(2)}
-                    </span>
-                    )} */}
                 </div>
               </div>
             </div>

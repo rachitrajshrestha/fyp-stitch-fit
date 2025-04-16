@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../style/measurements.css";
+import Navbar from "../component/Navbar";
+import Footer from "../component/Footer";
 
 const MeasurementForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -43,6 +46,7 @@ const MeasurementForm: React.FC = () => {
       });
 
       if (response.ok) {
+        localStorage.setItem("hasMeasurement", "true");
         alert("Measurement saved successfully!");
         navigate("/profile");
       } else {
@@ -54,45 +58,144 @@ const MeasurementForm: React.FC = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl font-bold mb-4">Enter Your Body Measurements</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {[
-          "chest",
-          "waist",
-          "hips",
-          "shoulderWidth",
-          "sleeveLength",
-          "inseam",
-          "neck",
-          "height",
-          "legLength",
-          "thighWidth",
-          "calvesWidth",
-        ].map((field) => (
-          <div key={field}>
-            <label className="block text-gray-700 capitalize">
-              {field.replace(/([A-Z])/g, " $1")}
-            </label>
-            <input
-              type="number"
-              name={field}
-              value={formData[field as keyof typeof formData]}
-              onChange={handleChange}
-              required
-              className="w-full p-2 border rounded-md"
-            />
-          </div>
-        ))}
+    <>
+      <Navbar
+        theme={"light"}
+        setTheme={function (theme: "light" | "dark"): void {
+          throw new Error("Function not implemented.");
+        }}
+      />
+      <div className="container">
+        <h1 className="page-title">Your Measurements</h1>
+        <p className="page-description">
+          Take accurate measurements to ensure your custom clothing fits
+          perfectly. Follow the guide below.
+        </p>
 
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-        >
-          Submit Measurements
-        </button>
-      </form>
-    </div>
+        {/* Measurement Guide */}
+        <div className="guide-section">
+          <h2 className="section-title">How to Measure</h2>
+          <div className="guide-cards">
+            <div className="guide-card">
+              <div className="img-container">
+                <img
+                  src="/placeholder.svg?height=300&width=300"
+                  alt="How to measure chest/bust"
+                  className="guide-img"
+                />
+              </div>
+              <h3 className="guide-title">1. Chest/Bust</h3>
+              <p className="guide-description">
+                Measure around the fullest part of your chest/bust, keeping the
+                tape measure horizontal.
+              </p>
+            </div>
+
+            <div className="guide-card">
+              <div className="img-container">
+                <img
+                  src="/placeholder.svg?height=300&width=300"
+                  alt="How to measure waist"
+                  className="guide-img"
+                />
+              </div>
+              <h3 className="guide-title">2. Waist</h3>
+              <p className="guide-description">
+                Measure around your natural waistline, keeping the tape measure
+                comfortably loose.
+              </p>
+            </div>
+
+            <div className="guide-card">
+              <div className="img-container">
+                <img
+                  src="/placeholder.svg?height=300&width=300"
+                  alt="How to measure hips"
+                  className="guide-img"
+                />
+              </div>
+              <h3 className="guide-title">3. Hips</h3>
+              <p className="guide-description">
+                Measure around the fullest part of your hips, keeping the tape
+                measure horizontal.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
+          <h2 className="text-3xl font-semibold text-center mb-6">
+            Enter Your Body Measurements (cm)
+          </h2>
+          <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                { name: "chest", label: "Chest/Bust", placeholder: "e.g., 92" },
+                { name: "waist", label: "Waist", placeholder: "e.g., 76" },
+                { name: "hips", label: "Hips", placeholder: "e.g., 98" },
+                {
+                  name: "shoulderWidth",
+                  label: "Shoulder Width",
+                  placeholder: "e.g., 42",
+                },
+                {
+                  name: "sleeveLength",
+                  label: "Sleeve Length",
+                  placeholder: "e.g., 60",
+                },
+                { name: "inseam", label: "Inseam", placeholder: "e.g., 78" },
+                { name: "neck", label: "Neck", placeholder: "e.g., 38" },
+                { name: "height", label: "Height", placeholder: "e.g., 175" },
+                {
+                  name: "legLength",
+                  label: "Leg Length",
+                  placeholder: "e.g., 100",
+                },
+                {
+                  name: "thighWidth",
+                  label: "Thigh Width",
+                  placeholder: "e.g., 55",
+                },
+                {
+                  name: "calvesWidth",
+                  label: "Calves Width",
+                  placeholder: "e.g., 40",
+                },
+              ].map(({ name, label, placeholder }) => (
+                <div key={name}>
+                  <label
+                    htmlFor={name}
+                    className="block text-gray-700 font-medium mb-1"
+                  >
+                    {label}
+                  </label>
+                  <input
+                    id={name}
+                    name={name}
+                    type="number"
+                    placeholder={placeholder}
+                    value={formData[name as keyof typeof formData]}
+                    onChange={handleChange}
+                    required
+                    className="w-full border border-gray-300 p-2 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 text-center">
+              <button
+                type="submit"
+                className="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition duration-300"
+              >
+                Save Measurements
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <Footer />
+    </>
   );
 };
 

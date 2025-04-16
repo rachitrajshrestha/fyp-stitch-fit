@@ -11,10 +11,17 @@ import ProductPage from "./pages/Product-Page";
 import Navbar from "./component/Navbar";
 import ProductDescription from "./pages/Product-Description";
 import AddressForm from "./pages/AddressDetails";
-import AboutUs from "./pages/aboutUs";
+
 import { Payment } from "./component/payment/Payment";
 import { Success } from "./component/payment/Success";
 import { Faliure } from "./component/payment/Faliure";
+import SearchResults from "./pages/SearchResults";
+
+import ProfilePage from "./pages/Profile/ProfilePage";
+import OrderPage from "./pages/Profile/OrderPage";
+import About from "./pages/About";
+import { Contact } from "./pages/contact";
+
 const App: React.FC = () => {
   return (
     <>
@@ -34,10 +41,16 @@ const App: React.FC = () => {
           <Route path="/cart" element={<Cart />}></Route>
           <Route path="/measurements" element={<MeasurementForm />}></Route>
           <Route path="/add-address" element={<AddressForm />} />
-          <Route path="/about" element={<AboutUs />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/payment" element={<Payment />}></Route>
           <Route path="/success" element={<Success />}></Route>
           <Route path="/faliure" element={<Faliure />}></Route>
+
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/orders" element={<OrderPage />} />
+
+          <Route path="/search" element={<SearchResults />} />
 
           <Route path="/admin/" element={<Dashboard />}></Route>
           <Route path="/admin/dashboard" element={<Dashboard />}></Route>

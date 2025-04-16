@@ -43,7 +43,18 @@ export default function LoginPage() {
         formValues
       );
       if (response.status === 201) {
-        localStorage.setItem("token", response.data.token);
+        const token = response.data.token;
+        localStorage.setItem("token", token);
+
+        const measurementRes = await axios.get(
+          "http://localhost:8081/measurements/has-measurement",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        const hasMeasurement = measurementRes.data.hasMeasurement;
+        localStorage.setItem("hasMeasurement", JSON.stringify(hasMeasurement));
         navigate("/");
       }
     } catch (err) {

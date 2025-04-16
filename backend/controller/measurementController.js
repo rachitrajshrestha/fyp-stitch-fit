@@ -1,6 +1,6 @@
+const { where } = require("sequelize");
 const { Measurement } = require("../models");
 
-// Create new measurement
 const createMeasurement = async (req, res) => {
   try {
     const userId = req.userId;
@@ -40,7 +40,6 @@ const createMeasurement = async (req, res) => {
   }
 };
 
-// Get all measurements
 const getMeasurements = async (req, res) => {
   try {
     const measurements = await Measurement.findAll();
@@ -51,7 +50,23 @@ const getMeasurements = async (req, res) => {
   }
 };
 
+const hasMeasurement = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const measurement = await Measurement.findOne({ where: { userId } });
+    if (measurement) {
+      return res.json({ hasMeasurement: true });
+    } else {
+      return res.json({ hasMeasurement: false });
+    }
+  } catch (error) {
+    console.error("Error checking measurement:", error);
+    return res.status(500).json({ error: "Server Error" });
+  }
+};
+
 module.exports = {
   createMeasurement,
   getMeasurements,
+  hasMeasurement,
 };

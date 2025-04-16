@@ -1,9 +1,14 @@
-import { useEffect, useState } from "react";
-import NavBar from "../component/Navbar";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import CategorySegment from "../component/category-segment";
+import FeaturedSection from "../component/featured-section";
 import Footer from "../component/Footer";
-import Card from "../component/Card";
+import HeroBanner from "../component/hero-banner";
+import HowToMeasure from "../component/how-to-measure";
+import ImageSlider from "../component/image-slider";
+import NavBar from "../component/Navbar";
+import ProductDescriptionHeader from "../component/product-description-header";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -36,16 +41,56 @@ const Home = () => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
 
   return (
-    <div>
-      <NavBar theme={theme} setTheme={setTheme} />
-      {/* <Card></Card> */}
-      {/* <ProductCard></ProductCard> */}
-      {/* <Footer></Footer> */}
+    <main className="min-h-screen flex flex-col">
+      <NavBar
+        theme={"light"}
+        setTheme={function (theme: "light" | "dark"): void {
+          throw new Error("Function not implemented.");
+        }}
+      />
+      <HeroBanner />
 
-      {/* <Slider slides={[]}></Slider> */}
-      <Card></Card>
-      <Footer></Footer>
-    </div>
+      <section className="py-12 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-8">
+            Shop by Category
+          </h2>
+          <CategorySegment />
+        </div>
+      </section>
+
+      <section className="py-12 bg-gray-50">
+        <HowToMeasure />
+      </section>
+
+      <section className="py-12 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-8">
+            Featured Products
+          </h2>
+          <FeaturedSection />
+        </div>
+      </section>
+
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4 mb-8">
+          <h2 className="text-3xl font-bold text-center mb-8">
+            Our Collections
+          </h2>
+          <ImageSlider images={[]} />
+        </div>
+        <ProductDescriptionHeader />
+      </section>
+
+      {/* <section className="py-12 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-8">All Products</h2>
+          <ProductList />
+        </div>
+      </section> */}
+
+      <Footer />
+    </main>
   );
 };
 
