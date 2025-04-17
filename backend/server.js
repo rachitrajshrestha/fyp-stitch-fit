@@ -8,9 +8,13 @@ const cartRouter = require("./routes/cartRoutes");
 const measurementRoutes = require("./routes/measurementRoutes");
 const addressRouter = require("./routes/addressRoutes");
 const feedbackForm = require("./routes/feedbackRoutes");
+const orderRoutes = require("./routes/orderRoutes");
+const categoryRoutes = require("./routes/categoryRoutes");
+const searchRoutes = require("./routes/searchRoutes");
 
 const fs = require("fs");
 const path = require("path");
+const order = require("./models/order");
 // const { getUserAddresses } = require("./controller/addAddressController");
 
 const app = express();
@@ -31,7 +35,10 @@ app.use("/cart", cartRouter);
 app.use("/measurements", measurementRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/add-address", addressRouter);
-app.use("/about", feedbackForm);
+app.use("/", feedbackForm);
+// app.use("/category", categoryRoutes);
+app.use("/order", orderRoutes);
+app.use("/search", searchRoutes);
 
 app.listen(SERVER_PORT, async () => {
   console.log(`App is listening on PORT ${SERVER_PORT}`);

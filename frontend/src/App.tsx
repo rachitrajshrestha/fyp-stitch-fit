@@ -2,12 +2,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from "react";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
+import { Register } from "./pages/Register";
 import Dashboard from "./pages/admin/Dashboard";
 import ProductForm from "./pages/admin/AddProduct";
 import Cart from "./pages/Cart";
 import MeasurementForm from "./pages/measurement";
-import ProductPage from "./pages/Product-Page";
+import { ProductPage } from "./pages/Product-Page";
 import Navbar from "./component/Navbar";
 import ProductDescription from "./pages/Product-Description";
 import AddressForm from "./pages/AddressDetails";
@@ -20,7 +20,8 @@ import SearchResults from "./pages/SearchResults";
 import ProfilePage from "./pages/Profile/ProfilePage";
 import OrderPage from "./pages/Profile/OrderPage";
 import About from "./pages/About";
-import { Contact } from "./pages/contact";
+import { Contact } from "./pages/Contact";
+import AdminFeedbackPage from "./pages/admin/Feedback";
 
 const App: React.FC = () => {
   return (
@@ -55,6 +56,7 @@ const App: React.FC = () => {
           <Route path="/admin/" element={<Dashboard />}></Route>
           <Route path="/admin/dashboard" element={<Dashboard />}></Route>
           <Route path="/admin/addProduct" element={<ProductForm />}></Route>
+          <Route path="/admin/feedback" element={<AdminFeedbackPage />}></Route>
         </Routes>
       </BrowserRouter>
     </>

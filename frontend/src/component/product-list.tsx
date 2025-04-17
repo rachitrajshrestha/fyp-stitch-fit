@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-interface Product {
+export interface Product {
   imageUrl: string;
   id: number;
   name: string;

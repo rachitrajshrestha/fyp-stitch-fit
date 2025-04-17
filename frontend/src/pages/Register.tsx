@@ -4,7 +4,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Register() {
+export const Register: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formValues, setFormValues] = useState({
     username: "",
@@ -151,4 +151,4 @@ export default function Register() {
       </div>
     </div>
   );
-}
+};

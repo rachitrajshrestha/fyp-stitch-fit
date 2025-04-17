@@ -28,10 +28,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       status: {
         type: DataTypes.STRING,
-        defaultValue: "pending", // could be: pending, completed, failed
+        defaultValue: "pending",
       },
       paymentMethod: {
-        type: DataTypes.STRING, // e.g., 'card', 'paypal', 'cash'
+        type: DataTypes.STRING,
         allowNull: true,
       },
     },

@@ -14,7 +14,7 @@ interface Product {
   oldPrice?: number;
 }
 
-export default function ProductList() {
+export const Card: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -39,47 +39,34 @@ export default function ProductList() {
     );
 
   return (
-    <div className="container mx-auto px-4 py-8 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      {products.length > 0 ? (
-        products.map((product) => (
-          <Link
-            key={product.id}
-            to={`/products/${product.id}`}
-            className="block"
-          >
-            <div className="rounded-lg overflow-hidden transition-all duration-200 hover:shadow-lg border border-gray-200">
-              <div className="relative h-48 w-full bg-gray-100 overflow-hidden">
-                <img
-                  src={`http://localhost:8081/${product.imageUrl}`}
-                  alt={product.name}
-                  className="object-cover transition-transform duration-300 hover:scale-110"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                />
-                {product.isNew && (
-                  <span className="absolute top-2 right-2 bg-rose-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                    New
-                  </span>
-                )}
-              </div>
-              <div className="p-4">
-                <h2 className="text-xl font-semibold mb-2 line-clamp-1">
-                  {product.name}
-                </h2>
-                <p className="text-gray-500 text-sm mb-3 line-clamp-2">
-                  {product.category}
-                </p>
-                <div className="flex items-center justify-between">
-                  <span className="text-lg font-bold">
-                    Rs {product.price.toFixed(2)}
-                  </span>
-                </div>
-              </div>
+    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      {products.map((product) => (
+        <Link key={product.id} to={`/products/${product.id}`} className="block">
+          <div className="rounded-lg border hover:shadow-lg overflow-hidden transition">
+            <div className="relative h-48 w-full bg-gray-100 overflow-hidden">
+              <img
+                src={`http://localhost:8081/${product.imageUrl}`}
+                alt={product.name}
+                className="object-cover w-full h-full transition-transform duration-300 hover:scale-110"
+              />
+              {product.isNew && (
+                <span className="absolute top-2 right-2 bg-rose-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  New
+                </span>
+              )}
             </div>
-          </Link>
-        ))
-      ) : (
-        <div className="text-center text-gray-500">No products found.</div>
-      )}
+            <div className="p-4">
+              <h2 className="text-xl font-semibold line-clamp-1">
+                {product.name}
+              </h2>
+              <p className="text-gray-500 text-sm">{product.category}</p>
+              <p className="text-lg font-bold mt-2">
+                Rs {product.price.toFixed(2)}
+              </p>
+            </div>
+          </div>
+        </Link>
+      ))}
     </div>
   );
-}
+};

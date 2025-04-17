@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from "react";
+"use client";
+
+import type React from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../component/Navbar";
-import axios from "axios";
+import FeaturedSection from "../component/featured-section";
+import Footer from "../component/Footer";
 
 export interface Product {
+  imageUrl: string;
   id: number;
   name: string;
   price: number;
   description: string;
-  image: string;
   isNew?: boolean;
   oldPrice?: number;
 }
@@ -90,19 +94,19 @@ const ProductDescription: React.FC = () => {
     <>
       <Navbar
         theme={"light"}
-        setTheme={function (theme: "light" | "dark"): void {
+        setTheme={(theme: "light" | "dark"): void => {
           throw new Error("Function not implemented.");
         }}
       />
       <main className="container mx-auto px-4 py-8">
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-12">
           <div className="md:flex">
             <div className="md:w-1/2">
               <div className="relative h-96 md:h-full">
                 <img
-                  src={product.image}
+                  src={`http://localhost:8081/${product.imageUrl}`}
                   alt={product.name}
-                  className="object-cover w-full h-full"
+                  className="object-cover w-full h-full transition-transform duration-300 hover:scale-110"
                 />
               </div>
             </div>
@@ -129,26 +133,7 @@ const ProductDescription: React.FC = () => {
                 Rs {product.price.toFixed(2)}
               </div>
               <p className="text-gray-600 mb-6">{product.description}</p>
-              <div className="mb-6">
-                <h2 className="font-semibold text-gray-900 mb-2">
-                  Key Features:
-                </h2>
-                <ul className="list-disc pl-5 text-gray-600 space-y-1">
-                  <li>Active noise cancellation</li>
-                  <li>30-hour battery life</li>
-                  <li>Bluetooth 5.0 connectivity</li>
-                  <li>Built-in microphone for calls</li>
-                  <li>Comfortable memory foam ear cushions</li>
-                </ul>
-              </div>
-              <div className="mb-6">
-                <h2 className="font-semibold text-gray-900 mb-2">Color:</h2>
-                <div className="flex space-x-2">
-                  <div className="w-8 h-8 rounded-full bg-black border-2 border-gray-300 cursor-pointer"></div>
-                  <div className="w-8 h-8 rounded-full bg-white border-2 border-gray-300 cursor-pointer"></div>
-                  <div className="w-8 h-8 rounded-full bg-blue-600 border-2 border-gray-300 cursor-pointer"></div>
-                </div>
-              </div>
+
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex border rounded-md">
                   <button
@@ -180,7 +165,16 @@ const ProductDescription: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Related Products Section */}
+        <div className="mt-16">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            You May Also Like
+          </h2>
+          <FeaturedSection />
+        </div>
       </main>
+      <Footer />
     </>
   );
 };

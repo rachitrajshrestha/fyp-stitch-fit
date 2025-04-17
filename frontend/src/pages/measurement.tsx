@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../style/measurements.css";
 import Navbar from "../component/Navbar";
 import Footer from "../component/Footer";
@@ -20,6 +20,9 @@ const MeasurementForm: React.FC = () => {
   });
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const redirectPage = queryParams.get("redirect");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -48,7 +51,12 @@ const MeasurementForm: React.FC = () => {
       if (response.ok) {
         localStorage.setItem("hasMeasurement", "true");
         alert("Measurement saved successfully!");
-        navigate("/profile");
+
+        if (redirectPage === "cart") {
+          navigate("/cart");
+        } else {
+          navigate("/profile");
+        }
       } else {
         alert("Failed to submit measurement");
       }

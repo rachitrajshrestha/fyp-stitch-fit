@@ -99,9 +99,10 @@ const searchProducts = async (req, res) => {
   try {
     const results = await Product.findAll({
       where: {
-        name: {
-          [Op.like]: `%${searchTerm}%`,
-        },
+        [Op.or]: [
+          { name: { [Op.like]: `%${searchTerm}%` } },
+          { category: { [Op.like]: `%${searchTerm}%` } },
+        ],
       },
     });
 
