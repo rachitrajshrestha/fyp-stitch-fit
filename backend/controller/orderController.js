@@ -1,50 +1,169 @@
-const { Order, OrderItem, CartItem, Product } = require("../models");
+const {
+  Payment,
+  Cart,
+  CartItem,
+  Order,
+  OrderItem,
+  Product,
+  Address,
+  Measurement,
+  User,
+} = require("../models");
 
 const createOrderAfterPayment = async (req, res) => {
   try {
     const userId = req.userId;
     const { paymentId } = req.body;
 
+    if (!paymentId)
+      return res.status(400).json({ message: "No payment ID provided" });
+
+    const payment = await Payment.findByPk(paymentId);
+    if (!payment) return res.status(404).json({ message: "Payment not found" });
+
+    const cart = await Cart.findOne({ where: { userId } });
+    if (!cart) return res.status(400).json({ message: "No cart found" });
+
     const cartItems = await CartItem.findAll({
-      where: { userId },
-      include: [Product],
+      where: { cartId: cart.id },
+      include: [{ model: Product }],
     });
-
-    if (cartItems.length === 0) {
+    if (!cartItems.length)
       return res.status(400).json({ message: "Cart is empty" });
-    }
 
-    const totalAmount = cartItems.reduce((sum, item) => {
-      return sum + item.quantity * item.Product.price;
-    }, 0);
+    const totalAmount = cartItems.reduce(
+      (sum, item) => sum + item.quantity * 1,
+      0
+    );
 
     const order = await Order.create({
       userId,
-      paymentId,
-      totalAmount,
-      status: "processing",
+      totalAmount: totalAmount,
+      paymentId: payment.id,
+      // addressId: selectedAddressId,
+      // measurementId: selectedMeasurementId,
     });
 
-    for (const item of cartItems) {
-      await OrderItem.create({
+    console.log(cartItems);
+
+    const orderItemPromises = cartItems.map((item) =>
+      OrderItem.create({
         orderId: order.id,
         productId: item.productId,
-        measurementId: item.measurementId || null,
-        quantity: item.quantity,
         price: item.Product.price,
-      });
-    }
+        quantity: item.quantity,
+      })
+    );
 
-    // 5. Optional: Clear cart after order
-    await CartItem.destroy({ where: { userId } });
+    await Promise.all(orderItemPromises);
 
-    return res
-      .status(201)
-      .json({ message: "Order created successfully", orderId: order.id });
+    await CartItem.destroy({ where: { cartId: cart.id } });
+
+    res.status(200).json({
+      message: "Order created successfully",
+      orderId: order.id,
+    });
   } catch (err) {
-    console.error("Order creation failed", err);
-    return res.status(500).json({ message: "Internal server error" });
+    console.error("Error in createOrderAfterPayment:", err);
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: err.message });
   }
 };
 
-module.exports = { createOrderAfterPayment };
+const getAllOrders = async (req, res) => {
+  try {
+    console.log("fff", req, res);
+    const orders = await Order.findAll({ attributes: ["id", "status"] });
+    //   {
+    //   include: [
+    //     { model: User, attributes: ["id", "name", "email"] },
+    //     {
+    //       model: OrderItem,
+    //       include: [
+    //         {
+    //           model: Product,
+    //           attributes: ["name", "price"],
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       model: Payment,
+    //     },
+    //     {
+    //       model: Measurement,
+    //       required: false,
+    //     },
+    //     {
+    //       model: Address,
+    //       required: false,
+    //     },
+    //   ],
+    //   // order: [["createdAt", "DESC"]],
+    // }
+
+    console.log("Orders", orders);
+
+    res.status(200).json(orders);
+  } catch (err) {
+    console.error("Error fetching all orders:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const getUserOrders = async (req, res) => {
+  try {
+    const userId = req.userId;
+    console.log("Getting orders for userId:", userId);
+
+    const orders = await Order.findAll({
+      where: { userId },
+      include: [
+        {
+          model: OrderItem,
+          include: [{ model: Product }],
+        },
+        { model: Payment },
+        { model: Measurement },
+        { model: Address },
+      ],
+      order: [["createdAt", "DESC"]],
+    });
+
+    res.status(200).json(orders);
+  } catch (err) {
+    console.error("🔥 Error fetching user orders:", err);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: err.message });
+  }
+};
+
+const updateOrderStatus = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    if (!["pending", "ongoing", "delivered"].includes(status)) {
+      return res.status(400).json({ message: "Invalid status" });
+    }
+
+    const order = await Order.findByPk(orderId);
+    if (!order) return res.status(404).json({ message: "Order not found" });
+
+    order.status = status;
+    await order.save();
+
+    res.status(200).json({ message: "Order status updated", order });
+  } catch (err) {
+    console.error("Error updating order status:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+module.exports = {
+  createOrderAfterPayment,
+  getAllOrders,
+  getUserOrders,
+  updateOrderStatus,
+};

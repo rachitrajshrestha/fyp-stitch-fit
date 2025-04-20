@@ -11,6 +11,7 @@ import logo_light from "../assets/stitch_fit_black_logo.png";
 import toggle_light from "../assets/night.png";
 import toggle_dark from "../assets/day.png";
 import profile_icon from "../assets/profile.png";
+import cartIcon from "../assets/basket-cart-icon-27.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -56,6 +57,10 @@ const Navbar: React.FC<NavbarProps> = ({ theme, setTheme }) => {
 
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
+  };
+
+  const handleCartClick = () => {
+    navigate("/cart");
   };
 
   const handleLogout = () => {
@@ -127,10 +132,16 @@ const Navbar: React.FC<NavbarProps> = ({ theme, setTheme }) => {
               />
             </button>
           </form>
-          <img
+          {/* <img
             onClick={toggle_mode}
             src={theme === "light" ? toggle_light : toggle_dark}
             alt="Theme toggle"
+            className="theme-toggle"
+          /> */}
+          <img
+            onClick={handleCartClick}
+            src={cartIcon}
+            alt="cart"
             className="theme-toggle"
           />
           <div className="profile-box">

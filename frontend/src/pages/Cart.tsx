@@ -53,7 +53,9 @@ const Cart: React.FC = () => {
   }, []);
 
   const removeFromCart = (id: number) => {
-    fetch(`http://localhost:8081/cart/${id}`, { method: "DELETE" })
+    fetch(`http://localhost:8081/cart/${id}`, {
+      method: "DELETE",
+    })
       .then(() => setCart(cart.filter((item) => item.id !== id)))
       .catch((err) => console.error("Error removing item:", err));
   };
@@ -67,8 +69,8 @@ const Cart: React.FC = () => {
     0
   );
 
-  const taxRate = 0.08; // 8% tax rate
-  const shipping = 0.0; // Free shipping
+  const taxRate = 0.08;
+  const shipping = 0.0;
 
   const calculateTax = () => {
     return totalPrice * taxRate;

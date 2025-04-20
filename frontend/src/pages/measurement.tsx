@@ -53,7 +53,7 @@ const MeasurementForm: React.FC = () => {
         alert("Measurement saved successfully!");
 
         if (redirectPage === "cart") {
-          navigate("/cart");
+          navigate("/product");
         } else {
           navigate("/profile");
         }

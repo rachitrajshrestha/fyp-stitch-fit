@@ -4,11 +4,7 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Payment extends Model {
     static associate(models) {
-      // Payment belongs to a User (optional, but common)
       Payment.belongsTo(models.User, { foreignKey: "userId" });
-
-      // Payment can have many CartItems
-      Payment.hasMany(models.CartItem, { foreignKey: "paymentId" });
     }
   }
 
@@ -17,20 +13,32 @@ module.exports = (sequelize, DataTypes) => {
       userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-          model: "Users", // case-sensitive!
-          key: "id",
-        },
       },
-      amount: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
+      transaction_code: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       status: {
         type: DataTypes.STRING,
-        defaultValue: "pending",
+        allowNull: true,
       },
-      paymentMethod: {
+      total_amount: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      transaction_uuid: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      product_code: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      signed_field_names: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      signature: {
         type: DataTypes.STRING,
         allowNull: true,
       },

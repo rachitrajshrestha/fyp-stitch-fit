@@ -11,6 +11,7 @@ const feedbackForm = require("./routes/feedbackRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const searchRoutes = require("./routes/searchRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
 
 const fs = require("fs");
 const path = require("path");
@@ -36,8 +37,9 @@ app.use("/measurements", measurementRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/add-address", addressRouter);
 app.use("/", feedbackForm);
+app.use("/payment", paymentRoutes);
 // app.use("/category", categoryRoutes);
-app.use("/order", orderRoutes);
+app.use("/orders", orderRoutes);
 app.use("/search", searchRoutes);
 
 app.listen(SERVER_PORT, async () => {

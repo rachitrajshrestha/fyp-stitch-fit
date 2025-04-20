@@ -11,16 +11,17 @@ import { ProductPage } from "./pages/Product-Page";
 import Navbar from "./component/Navbar";
 import ProductDescription from "./pages/Product-Description";
 import AddressForm from "./pages/AddressDetails";
-
 import { Payment } from "./component/payment/Payment";
 import { Success } from "./component/payment/Success";
 import { Faliure } from "./component/payment/Faliure";
 import SearchResults from "./pages/SearchResults";
-
 import ProfilePage from "./pages/Profile/ProfilePage";
-import OrderPage from "./pages/Profile/OrderPage";
+
 import About from "./pages/About";
 import { Contact } from "./pages/Contact";
+
+import AdminOrders from "./pages/admin/Orders";
+import { UserOrders } from "./pages/Profile/OrderHistory";
 import AdminFeedbackPage from "./pages/admin/Feedback";
 
 const App: React.FC = () => {
@@ -49,7 +50,8 @@ const App: React.FC = () => {
           <Route path="/faliure" element={<Faliure />}></Route>
 
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/orders" element={<OrderPage />} />
+          <Route path="/profile/order" element={<UserOrders />}></Route>
+          {/* <Route path="/orders" element={<OrderPage />} /> */}
 
           <Route path="/search" element={<SearchResults />} />
 
@@ -57,6 +59,7 @@ const App: React.FC = () => {
           <Route path="/admin/dashboard" element={<Dashboard />}></Route>
           <Route path="/admin/addProduct" element={<ProductForm />}></Route>
           <Route path="/admin/feedback" element={<AdminFeedbackPage />}></Route>
+          <Route path="/admin/order" element={<AdminOrders />}></Route>
         </Routes>
       </BrowserRouter>
     </>

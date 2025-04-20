@@ -42,14 +42,12 @@ const addToCart = async (req, res) => {
     const userId = req.userId;
     const { productId } = req.body;
 
-    // 1. Find or create a cart for the user
     let cart = await Cart.findOne({ where: { userId } });
 
     if (!cart) {
       cart = await Cart.create({ userId });
     }
 
-    // 2. Check if the product is already in the cart
     let cartItem = await CartItem.findOne({
       where: {
         cartId: cart.id,
@@ -58,11 +56,9 @@ const addToCart = async (req, res) => {
     });
 
     if (cartItem) {
-      // 3. If it exists, increase quantity
       cartItem.quantity += 1;
       await cartItem.save();
     } else {
-      // 4. If not, create new CartItem
       cartItem = await CartItem.create({
         cartId: cart.id,
         productId,
@@ -83,14 +79,17 @@ const removeFromCart = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deleted = await Cart.destroy({ where: { id } });
+    const deleted = await CartItem.destroy({ where: { id } });
+
     if (!deleted) {
       return res.status(404).json({ error: "Cart item not found" });
     }
 
     res.json({ message: "Item removed from cart" });
   } catch (error) {
-    res.status(500).json({ error: "Error removing item from cart" });
+    res
+      .status(500)
+      .json({ error: "Error removing item from cart", details: error.message });
   }
 };
 

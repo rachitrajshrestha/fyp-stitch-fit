@@ -9,7 +9,8 @@ export const Register: React.FC = () => {
   const [formValues, setFormValues] = useState({
     username: "",
     email: "",
-    contact: "",
+    phone: "",
+    address: "",
     password: "",
   });
   const [error, setError] = useState("");
@@ -48,7 +49,13 @@ export const Register: React.FC = () => {
 
     console.log("Signup with:", formValues);
 
-    setFormValues({ username: "", email: "", contact: "", password: "" });
+    setFormValues({
+      username: "",
+      email: "",
+      phone: "",
+      address: "",
+      password: "",
+    });
   };
 
   return (
@@ -97,10 +104,24 @@ export const Register: React.FC = () => {
               </label>
               <input
                 type="tel"
-                name="contact"
+                name="phone"
                 placeholder="1234567890"
                 className="w-full border rounded-md px-4 py-2"
-                value={formValues.contact}
+                value={formValues.phone}
+                onChange={handleInputChange}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Address
+              </label>
+              <input
+                type="tel"
+                name="address"
+                placeholder="street-7,pokhara"
+                className="w-full border rounded-md px-4 py-2"
+                value={formValues.address}
                 onChange={handleInputChange}
               />
             </div>

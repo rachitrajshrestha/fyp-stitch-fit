@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const verifyToken = require("../middleware/verifyToken");
 
 router.post("/register", async (req, res) => {
-  const { username, email, phone, password } = req.body;
+  const { username, email, phone, address, password } = req.body;
   try {
     const db = await connectToDatabase();
     const [row] = await db.query("SELECT * FROM users WHERE email = ?", [
@@ -20,11 +20,12 @@ router.post("/register", async (req, res) => {
 
     const hashPassword = await bcrypt.hash(password, 10);
     await db.query(
-      "INSERT INTO users (username, email, phone, password, createdAt, updatedAt) VALUES (?, ?, ?, ?, now(), now())",
+      "INSERT INTO users (username, email, phone, address, password, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, now(), now())",
       [
         username,
         email,
         phone,
+        address,
         hashPassword,
         new Date().toDateString(),
         new Date().toDateString(),

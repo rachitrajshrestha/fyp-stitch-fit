@@ -1,24 +1,49 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 export const Success = () => {
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const createOrder = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const paymentId = localStorage.getItem("paymentId");
+    const queryParams = new URLSearchParams(window.location.search);
+    const encodedData = queryParams.get("data");
+    try {
+      if (!encodedData) return;
 
-        if (!paymentId) {
-          console.error("Payment ID not found");
-          return;
+      const decoded = JSON.parse(atob(encodedData));
+
+      console.log(decoded);
+
+      handlePaymentSuccess(decoded);
+    } catch (err) {
+      console.error("Error handling payment success:", err);
+    }
+  });
+
+  const handlePaymentSuccess = async (paymentData: any) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const paymentRes = await axios.post(
+        "http://localhost:8081/payment",
+        paymentData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
+      );
 
-        const res = await axios.post(
-          "http://localhost:8081/order/create",
-          { paymentId },
+      if (paymentRes.status === 200) {
+        const paymentId = paymentRes.data.id;
+
+        const orderRes = await axios.post(
+          "http://localhost:8081/orders/create-order-after-payment",
+          {
+            paymentId,
+          },
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -26,26 +51,38 @@ export const Success = () => {
           }
         );
 
-        console.log("Order created:", res.data);
-        // Clear cart/payment data from storage
-        localStorage.removeItem("paymentId");
-
-        // Optionally redirect or show confirmation
-        setTimeout(() => {
-          navigate("/orders");
-        }, 2000);
-      } catch (err) {
-        console.error("Failed to create order:", err);
+        if (orderRes.status === 200) {
+          navigate("/profile/order");
+        } else {
+          console.error("Order creation failed:", orderRes.data);
+        }
       }
-    };
-
-    createOrder();
-  }, []);
+    } catch (err) {
+      console.error("Error handling payment success:", err);
+    }
+  };
+  //   fetch("http://localhost:8081/orders/create-order-after-payment", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //     body: JSON.stringify({ paymentData: decoded }),
+  //   })
+  //     .then((res) => {
+  //       if (!res.ok) throw new Error("Failed to process payment/order");
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       console.log("Order Created:", data);
+  //       navigate("/order-summary");
+  //     })
+  //     .catch((err) => console.error("Error during post-payment process:", err));
+  // }, []);
 
   return (
-    <div className="flex items-center justify-center h-screen flex-col gap-4">
-      <h1 className="text-3xl font-bold text-green-600">Payment Successful!</h1>
-      <p>We are processing your order...</p>
+    <div className="min-h-screen flex justify-center items-center">
+      <h1 className="text-2xl font-bold">Processing your payment...</h1>
     </div>
   );
 };

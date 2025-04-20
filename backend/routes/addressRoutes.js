@@ -6,7 +6,7 @@ const {
 } = require("../controller/addAddressController");
 const verifyToken = require("../middleware/verifyToken");
 
-router.post("/", verifyToken, createAddress); // Save address
-router.get("/", verifyToken, getUserAddresses); // Get address for user
+router.post("/", verifyToken, createAddress);
+router.get("/", verifyToken, getUserAddresses);
 
 module.exports = router;
