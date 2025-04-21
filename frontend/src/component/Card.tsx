@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+
 interface Product {
   category: string;
   imageUrl: string;
@@ -42,7 +43,7 @@ export const Card: React.FC = () => {
     <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {products.map((product) => (
         <Link key={product.id} to={`/products/${product.id}`} className="block">
-          <div className="rounded-lg border hover:shadow-lg overflow-hidden transition">
+          <div className="rounded-lg shadow-md hover:shadow-lg overflow-hidden transition duration-300 bg-white">
             <div className="relative h-48 w-full bg-gray-100 overflow-hidden">
               <img
                 src={`http://localhost:8081/${product.imageUrl}`}

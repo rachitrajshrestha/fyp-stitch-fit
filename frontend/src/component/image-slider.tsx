@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import heroBanner1 from "../assets/stitchandfit/HeroBanner/hero banner.jpg";
 
 interface SliderProps {
   images: {
@@ -52,11 +53,7 @@ export default function ImageSlider({
             index === currentIndex ? "opacity-100" : "opacity-0"
           }`}
         >
-          <img
-            src={image.src || "/placeholder.svg"}
-            alt={image.alt}
-            className="object-cover"
-          />
+          <img src={heroBanner1} alt={image.alt} className="object-cover" />
         </div>
       ))}
 
@@ -67,7 +64,7 @@ export default function ImageSlider({
         aria-label="Previous slide"
       >
         <svg
-          xmlns="http://www.w3.org/2000/svg"
+          xmlns={heroBanner1}
           className="h-6 w-6"
           fill="none"
           viewBox="0 0 24 24"
@@ -87,7 +84,7 @@ export default function ImageSlider({
         aria-label="Next slide"
       >
         <svg
-          xmlns="http://www.w3.org/2000/svg"
+          xmlns={heroBanner1}
           className="h-6 w-6"
           fill="none"
           viewBox="0 0 24 24"

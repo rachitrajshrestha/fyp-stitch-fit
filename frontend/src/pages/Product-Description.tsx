@@ -102,11 +102,11 @@ const ProductDescription: React.FC = () => {
         <div className="bg-white rounded-lg shadow-md overflow-hidden mb-12">
           <div className="md:flex">
             <div className="md:w-1/2">
-              <div className="relative h-96 md:h-full">
+              <div className="relative h-[500px] w-[500px] overflow-hidden">
                 <img
                   src={`http://localhost:8081/${product.imageUrl}`}
                   alt={product.name}
-                  className="object-cover w-full h-full transition-transform duration-300 hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                 />
               </div>
             </div>

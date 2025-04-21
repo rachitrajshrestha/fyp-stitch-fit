@@ -63,6 +63,10 @@ const Navbar: React.FC<NavbarProps> = ({ theme, setTheme }) => {
     navigate("/cart");
   };
 
+  const handlelogoClick = () => {
+    navigate("/");
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     setUser(null);
@@ -82,6 +86,7 @@ const Navbar: React.FC<NavbarProps> = ({ theme, setTheme }) => {
       <div className="navbar-container">
         <div className="navbar-left">
           <img
+            onClick={handlelogoClick}
             src={theme === "light" ? logo_light : logo_dark}
             alt="Logo"
             className="logo"

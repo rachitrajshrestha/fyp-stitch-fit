@@ -68,7 +68,7 @@ export default function HowToMeasure() {
         <div className="text-center">
           <a
             href="/measurements"
-            className="inline-block bg-rose-600 hover:bg-rose-700 text-white font-medium py-3 px-6 rounded-md transition-colors"
+            className="inline-block bg-gray-900 hover:bg-gray-700 text-white font-medium py-3 px-6 rounded-md transition-colors"
           >
             Add Measurement
           </a>

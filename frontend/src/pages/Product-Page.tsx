@@ -127,7 +127,7 @@ export const ProductPage: React.FC = () => {
             />
           </div>
 
-          <div className="w-full md:w-3/4">
+          <div className="w-full md:w-10/11">
             <Card />
           </div>
         </div>

@@ -1,3 +1,7 @@
+import banner1 from "../assets/stitchandfit/blouse9.jpg";
+import banner2 from "../assets/stitchandfit/blouse12.jpg";
+import banner3 from "../assets/stitchandfit/blouse20.jpg";
+
 export default function ProductDescriptionHeader() {
   return (
     <div className="container mx-auto px-4">
@@ -7,7 +11,7 @@ export default function ProductDescriptionHeader() {
         {/* First row */}
         <div className="flex justify-center">
           <img
-            src="/placeholder.svg?height=600&width=400"
+            src={banner1}
             alt="Traditional clothing"
             width={400}
             height={600}
@@ -52,18 +56,18 @@ export default function ProductDescriptionHeader() {
 
         <div className="flex justify-center md:order-4">
           <img
-            src="/placeholder.svg?height=400&width=400"
+            src={banner2}
             alt="Traditional jewelry"
             width={400}
             height={400}
-            className="rounded-md object-cover"
+            className="rounded-md object-cover w-[400px] h-[400px]"
           />
         </div>
 
         {/* Third row */}
         <div className="flex justify-center md:order-5">
           <img
-            src="/placeholder.svg?height=600&width=400"
+            src={banner3}
             alt="Traditional clothing detail"
             width={400}
             height={600}

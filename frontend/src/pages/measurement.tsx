@@ -194,7 +194,7 @@ const MeasurementForm: React.FC = () => {
             <div className="mt-8 text-center">
               <button
                 type="submit"
-                className="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition duration-300"
+                className="bg-gray-900 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition duration-300"
               >
                 Save Measurements
               </button>

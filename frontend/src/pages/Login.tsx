@@ -77,7 +77,6 @@ export default function LoginPage() {
             <input
               type="email"
               name="email"
-              placeholder="name@example.com"
               className="w-full rounded-md border px-4 py-2 focus:border-gray-500 focus:ring-gray-500"
               value={formValues.email}
               onChange={handleInputChange}

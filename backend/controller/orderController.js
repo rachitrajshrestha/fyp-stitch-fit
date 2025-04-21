@@ -73,48 +73,37 @@ const createOrderAfterPayment = async (req, res) => {
 
 const getAllOrders = async (req, res) => {
   try {
-    console.log("fff", req, res);
-    const orders = await Order.findAll({ attributes: ["id", "status"] });
-    //   {
-    //   include: [
-    //     { model: User, attributes: ["id", "name", "email"] },
-    //     {
-    //       model: OrderItem,
-    //       include: [
-    //         {
-    //           model: Product,
-    //           attributes: ["name", "price"],
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       model: Payment,
-    //     },
-    //     {
-    //       model: Measurement,
-    //       required: false,
-    //     },
-    //     {
-    //       model: Address,
-    //       required: false,
-    //     },
-    //   ],
-    //   // order: [["createdAt", "DESC"]],
-    // }
+    const userId = req.userId;
+    const orders = await Order.findAll({
+      include: [
+        {
+          model: User,
+        },
+        {
+          model: Payment,
+        },
+        {
+          model: Address,
+        },
+        {
+          model: Measurement,
+        },
+        {
+          model: OrderItem,
+        },
+      ],
+    });
 
-    console.log("Orders", orders);
-
-    res.status(200).json(orders);
-  } catch (err) {
-    console.error("Error fetching all orders:", err);
-    res.status(500).json({ message: "Internal server error" });
+    res.json(orders);
+  } catch (error) {
+    console.error("Error fetching admin orders:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
 const getUserOrders = async (req, res) => {
   try {
     const userId = req.userId;
-    console.log("Getting orders for userId:", userId);
 
     const orders = await Order.findAll({
       where: { userId },
@@ -132,7 +121,7 @@ const getUserOrders = async (req, res) => {
 
     res.status(200).json(orders);
   } catch (err) {
-    console.error("🔥 Error fetching user orders:", err);
+    console.error("Error fetching user orders:", err);
     res
       .status(500)
       .json({ message: "Internal server error", error: err.message });

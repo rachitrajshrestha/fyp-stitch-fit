@@ -1,5 +1,7 @@
 import Footer from "../component/Footer";
 import Navbar from "../component/Navbar";
+import banner1 from "../assets/stitchandfit/about/aboutbanner.jpg";
+import banner2 from "../assets/stitchandfit/about/about2.webp";
 
 export default function About() {
   return (
@@ -46,9 +48,11 @@ export default function About() {
               </div>
               <div className="relative h-80 rounded-lg overflow-hidden">
                 <img
-                  src="/placeholder.svg?height=600&width=800"
+                  src={banner2}
                   alt="Our company story"
                   className="object-cover"
+                  width={800}
+                  height={600}
                 />
               </div>
             </div>

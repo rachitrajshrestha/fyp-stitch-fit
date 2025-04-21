@@ -9,6 +9,7 @@ import HowToMeasure from "../component/how-to-measure";
 import ImageSlider from "../component/image-slider";
 import NavBar from "../component/Navbar";
 import ProductDescriptionHeader from "../component/product-description-header";
+import heroBanner1 from "../assets/stitchandfit/HeroBanner/hero banner.jpg";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -77,7 +78,23 @@ const Home = () => {
           <h2 className="text-3xl font-bold text-center mb-8">
             Our Collections
           </h2>
-          <ImageSlider images={[]} />
+          {/* <ImageSlider images={[]} /> */}
+          <div className="relative bg-gray-900 text-white">
+            <div
+              className="absolute inset-0 bg-cover bg-center opacity-40"
+              style={{
+                backgroundImage:
+                  "url('/placeholder.svg?height=600&width=1200')",
+              }}
+            ></div>
+            <div className="w-full relative">
+              <img
+                src={heroBanner1}
+                alt="Traditional clothing"
+                className="w-full h-[400px] object-cover"
+              />
+            </div>
+          </div>
         </div>
         <ProductDescriptionHeader />
       </section>

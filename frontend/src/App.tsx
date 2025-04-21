@@ -23,6 +23,7 @@ import { Contact } from "./pages/Contact";
 import AdminOrders from "./pages/admin/Orders";
 import { UserOrders } from "./pages/Profile/OrderHistory";
 import AdminFeedbackPage from "./pages/admin/Feedback";
+import AddressDetails from "./pages/AddressDetails";
 
 const App: React.FC = () => {
   return (
@@ -42,7 +43,8 @@ const App: React.FC = () => {
           <Route path="/products/:productId" element={<ProductDescription />} />
           <Route path="/cart" element={<Cart />}></Route>
           <Route path="/measurements" element={<MeasurementForm />}></Route>
-          <Route path="/add-address" element={<AddressForm />} />
+          <Route path="/add-address" element={<AddressDetails />} />
+
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/payment" element={<Payment />}></Route>

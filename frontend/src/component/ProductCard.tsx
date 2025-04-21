@@ -41,15 +41,15 @@ const Card = () => {
         products.map((product) => (
           <div
             key={product.id}
-            className="p-4 border rounded-lg shadow-md transition-all duration-300 
-                      hover:shadow-lg hover:scale-[1.02] hover:border-primary/20 
+            className="p-4 border rounded-lg shadow-md transition-all duration-300
+                      hover:shadow-lg hover:scale-[1.02] hover:border-primary/20
                       bg-white cursor-pointer"
           >
             <div className="overflow-hidden rounded-md">
               <img
                 src={`../${product.imageUrl}`}
                 alt={product.name}
-                className="w-full h-48 object-cover rounded-md transition-transform duration-300 
+                className="w-full h-48 object-cover rounded-md transition-transform duration-300
                           hover:scale-105"
               />
             </div>

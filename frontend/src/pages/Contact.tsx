@@ -71,7 +71,7 @@ export const Contact: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-8 mb-16">
             <div className="h-72 md:h-full">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.0619442328395!2d85.32396027466659!3d27.71395397620039!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb190d2876db9f%3A0xf0e32c4c0c6d3c8b!2sKathmandu%2C%20Nepal!5e0!3m2!1sen!2snp!4v1713258760000!5m2!1sen!2snp"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d67188.8792110022!2d83.90090214132921!3d28.223940404843248!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3995937bbf0376ff%3A0xf6cf823b25802164!2sPokhara!5e0!3m2!1sen!2snp!4v1745177166845!5m2!1sen!2snp"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -86,7 +86,7 @@ export const Contact: React.FC = () => {
               <div className="space-y-6 text-gray-600">
                 <div>
                   <strong>📍 Address:</strong>
-                  <p>Kathmandu, Nepal</p>
+                  <p>Pokhara, Nepal</p>
                 </div>
                 <div>
                   <strong>📞 Phone:</strong>
@@ -171,7 +171,7 @@ export const Contact: React.FC = () => {
               />
               <button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md disabled:opacity-50"
+                className="w-full bg-gray-00 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-md disabled:opacity-50"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Submitting..." : "Submit Feedback"}
