@@ -2,8 +2,6 @@
 
 import type React from "react";
 
-import { useState } from "react";
-
 interface FilterProps {
   filters: {
     category: string;
@@ -19,18 +17,12 @@ export default function ProductFilters({
   onFilterChange,
   categories,
 }: FilterProps) {
-  const [priceRange, setPriceRange] = useState(filters.priceRange);
-
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number.parseInt(e.target.value);
     const index = e.target.name === "min" ? 0 : 1;
-    const newRange = [...priceRange];
+    const newRange = [...filters.priceRange];
     newRange[index] = value;
-    setPriceRange(newRange);
-  };
-
-  const applyPriceFilter = () => {
-    onFilterChange({ priceRange });
+    onFilterChange({ priceRange: newRange });
   };
 
   return (
@@ -81,7 +73,7 @@ export default function ProductFilters({
               type="number"
               id="min-price"
               name="min"
-              value={priceRange[0]}
+              value={filters.priceRange[0]}
               onChange={handlePriceChange}
               className="border border-gray-300 rounded px-3 py-2 w-full"
             />
@@ -94,17 +86,11 @@ export default function ProductFilters({
               type="number"
               id="max-price"
               name="max"
-              value={priceRange[1]}
+              value={filters.priceRange[1]}
               onChange={handlePriceChange}
               className="border border-gray-300 rounded px-3 py-2 w-full"
             />
           </div>
-          <button
-            onClick={applyPriceFilter}
-            className="bg-gray-800 text-white py-2 px-4 rounded w-full hover:bg-gray-700 transition-colors"
-          >
-            Apply
-          </button>
         </div>
       </div>
 

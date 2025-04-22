@@ -1,9 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import {
+  LayoutDashboard,
+  Package,
+  PlusCircle,
+  User,
+  MessageSquare,
+  Menu,
+  Gift,
+} from "lucide-react";
 
 export function AdminSidebar() {
   const [currentPath, setCurrentPath] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     setCurrentPath(window.location.pathname);
@@ -22,117 +32,103 @@ export function AdminSidebar() {
   const routes = [
     {
       label: "Dashboard",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-4 w-4"
-        >
-          <rect width="7" height="9" x="3" y="3" rx="1" />
-          <rect width="7" height="5" x="14" y="3" rx="1" />
-          <rect width="7" height="9" x="14" y="12" rx="1" />
-          <rect width="7" height="5" x="3" y="16" rx="1" />
-        </svg>
-      ),
+      icon: LayoutDashboard,
       href: "/admin/dashboard",
       active: currentPath === "/admin/dashboard",
     },
     {
+      label: "Product Details",
+      icon: Package,
+      href: "/admin/productDetails",
+      active: currentPath === "/admin/productDetails",
+    },
+    {
       label: "Add Product",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-4 w-4"
-        >
-          <path d="M21 8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8Z" />
-          <path d="M17 2H7a1 1 0 0 0-1 1v5h12V3a1 1 0 0 0-1-1Z" />
-        </svg>
-      ),
+      icon: PlusCircle,
       href: "/admin/addProduct",
       active: currentPath === "/admin/addProduct",
     },
     {
+      label: "Feedback",
+      icon: MessageSquare,
+      href: "/admin/feedback",
+      active: currentPath === "/admin/feedback",
+    },
+    {
+      label: "Orders",
+      icon: Gift,
+      href: "/admin/order",
+      active: currentPath === "/admin/order",
+    },
+    {
       label: "Profile",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-4 w-4"
-        >
-          <circle cx="12" cy="8" r="5" />
-          <path d="M20 21a8 8 0 1 0-16 0" />
-        </svg>
-      ),
+      icon: User,
       href: "/admin/profile",
       active: currentPath === "/admin/profile",
     },
   ];
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
-    <div className="flex h-full w-full flex-col border-r bg-gray-50 md:w-64">
-      <div className="flex h-14 items-center border-b px-4 lg:h-[60px]">
-        <a
-          href="/admin/dashboard"
-          className="flex items-center gap-2 font-semibold"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-6 w-6"
+    <>
+      {/* Mobile menu button */}
+      <button
+        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-white shadow-md"
+        onClick={toggleMobileMenu}
+      >
+        <Menu className="h-5 w-5" />
+      </button>
+
+      {/* Sidebar */}
+      <div
+        className={`
+        ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"} 
+        md:translate-x-0
+        transition-transform duration-300 ease-in-out
+        fixed md:static
+        z-40
+        flex h-full w-64 flex-col border-r bg-gray-50
+      `}
+      >
+        <div className="flex h-14 items-center border-b px-4 lg:h-[60px]">
+          <a
+            href="/admin/dashboard"
+            className="flex items-center gap-2 font-semibold"
           >
-            <path d="M21 8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8Z" />
-            <path d="M17 2H7a1 1 0 0 0-1 1v5h12V3a1 1 0 0 0-1-1Z" />
-          </svg>
-          <span>Admin Panel</span>
-        </a>
+            <Package className="h-6 w-6" />
+            <span>Admin Panel</span>
+          </a>
+        </div>
+        <div className="flex-1">
+          <nav className="grid gap-1 p-2">
+            {routes.map((route) => (
+              <a
+                key={route.href}
+                href={route.href}
+                className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                  route.active
+                    ? "bg-gray-200 text-gray-900"
+                    : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                }`}
+              >
+                <route.icon className="h-4 w-4" />
+                {route.label}
+              </a>
+            ))}
+          </nav>
+        </div>
       </div>
-      <div className="flex-1">
-        <nav className="grid gap-1 p-2">
-          {routes.map((route) => (
-            <a
-              key={route.href}
-              href={route.href}
-              className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                route.active
-                  ? "bg-gray-200 text-gray-900"
-                  : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
-              }`}
-            >
-              {route.icon}
-              {route.label}
-            </a>
-          ))}
-        </nav>
-      </div>
-    </div>
+
+      {/* Overlay for mobile */}
+      {isMobileMenuOpen && (
+        <div
+          className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+    </>
   );
 }

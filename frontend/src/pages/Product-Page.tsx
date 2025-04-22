@@ -51,25 +51,25 @@ export const ProductPage: React.FC = () => {
       });
   }, []);
 
-  const applyFilters = (updatedFilter: Partial<typeof filters>) => {
-    const newFilters = { ...filters, ...updatedFilter };
-    setFilters(newFilters);
-
+  // Apply filters whenever the filters state changes
+  useEffect(() => {
     let result = [...products];
 
-    if (newFilters.category) {
+    // Apply category filter
+    if (filters.category) {
       result = result.filter(
-        (p) => p.category.toLowerCase() === newFilters.category.toLowerCase()
+        (p) => p.category.toLowerCase() === filters.category.toLowerCase()
       );
     }
 
+    // Apply price range filter
     result = result.filter(
       (p) =>
-        p.price >= newFilters.priceRange[0] &&
-        p.price <= newFilters.priceRange[1]
+        p.price >= filters.priceRange[0] && p.price <= filters.priceRange[1]
     );
 
-    switch (newFilters.sortBy) {
+    // Apply sorting
+    switch (filters.sortBy) {
       case "price-low":
         result.sort((a, b) => a.price - b.price);
         break;
@@ -79,20 +79,24 @@ export const ProductPage: React.FC = () => {
       case "newest":
         result.sort((a, b) => b.id - a.id);
         break;
+      // default sorting (no specific order)
     }
 
     setFilteredProducts(result);
-  };
+  }, [filters, products]);
 
-  const handleFilterChange = (newFilters: any) => {
-    setFilters({ ...filters, ...newFilters });
+  const handleFilterChange = (newFilters: Partial<typeof filters>) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      ...newFilters,
+    }));
   };
 
   return (
     <main className="min-h-screen">
       <Navbar
         theme={"light"}
-        setTheme={function (theme: "light" | "dark"): void {
+        setTheme={(theme: "light" | "dark"): void => {
           throw new Error("Function not implemented.");
         }}
       />
@@ -122,13 +126,19 @@ export const ProductPage: React.FC = () => {
           <div className="w-full md:w-1/4">
             <ProductFilters
               filters={filters}
-              onFilterChange={applyFilters}
+              onFilterChange={handleFilterChange}
               categories={categories}
             />
           </div>
 
-          <div className="w-full md:w-10/11">
-            <Card />
+          <div className="w-full md:w-3/4">
+            {loading ? (
+              <div className="flex justify-center items-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
+              </div>
+            ) : (
+              <Card products={filteredProducts} />
+            )}
           </div>
         </div>
       </div>

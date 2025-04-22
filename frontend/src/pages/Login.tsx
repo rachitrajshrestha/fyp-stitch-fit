@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 export default function LoginPage() {
   const [formValues, setFormValues] = useState({
@@ -42,20 +43,29 @@ export default function LoginPage() {
         "http://localhost:8081/auth/login",
         formValues
       );
+
       if (response.status === 201) {
         const token = response.data.token;
         localStorage.setItem("token", token);
 
-        const measurementRes = await axios.get(
-          "http://localhost:8081/measurements/has-measurement",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const decoded = jwtDecode<{ id: number; role: string }>(token);
 
-        const hasMeasurement = measurementRes.data.hasMeasurement;
-        localStorage.setItem("hasMeasurement", JSON.stringify(hasMeasurement));
-        navigate("/");
+        if (decoded.role === "admin") {
+          navigate("/admin/dashboard");
+        } else {
+          const measurementRes = await axios.get(
+            "http://localhost:8081/measurements/has-measurement",
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          const hasMeasurement = measurementRes.data.hasMeasurement;
+          localStorage.setItem(
+            "hasMeasurement",
+            JSON.stringify(hasMeasurement)
+          );
+          navigate("/");
+        }
       }
     } catch (err) {
       setError("Login failed. Please try again.");

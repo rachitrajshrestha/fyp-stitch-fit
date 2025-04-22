@@ -171,7 +171,7 @@ export const Contact: React.FC = () => {
               />
               <button
                 type="submit"
-                className="w-full bg-gray-00 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-md disabled:opacity-50"
+                className="w-full bg-gray-800 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-md disabled:opacity-50"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Submitting..." : "Submit Feedback"}

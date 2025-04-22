@@ -1,29 +1,26 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from "react";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import { Register } from "./pages/Register";
-import Dashboard from "./pages/admin/Dashboard";
-import ProductForm from "./pages/admin/AddProduct";
-import Cart from "./pages/Cart";
-import MeasurementForm from "./pages/measurement";
-import { ProductPage } from "./pages/Product-Page";
-import Navbar from "./component/Navbar";
-import ProductDescription from "./pages/Product-Description";
-import AddressForm from "./pages/AddressDetails";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Faliure } from "./component/payment/Faliure";
 import { Payment } from "./component/payment/Payment";
 import { Success } from "./component/payment/Success";
-import { Faliure } from "./component/payment/Faliure";
-import SearchResults from "./pages/SearchResults";
+import ProductForm from "./pages/admin/AddProduct";
+import Cart from "./pages/Cart";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import MeasurementForm from "./pages/measurement";
+import ProductDescription from "./pages/Product-Description";
+import { ProductPage } from "./pages/Product-Page";
 import ProfilePage from "./pages/Profile/ProfilePage";
-
+import { Register } from "./pages/Register";
+import SearchResults from "./pages/SearchResults";
 import About from "./pages/About";
 import { Contact } from "./pages/Contact";
-
+import AddressDetails from "./pages/AddressDetails";
+import AdminFeedbackPage from "./pages/admin/Feedback";
 import AdminOrders from "./pages/admin/Orders";
 import { UserOrders } from "./pages/Profile/OrderHistory";
-import AdminFeedbackPage from "./pages/admin/Feedback";
-import AddressDetails from "./pages/AddressDetails";
+import { AdminRoute } from "./component/AdminRoute";
+import ProductTable from "./pages/admin/AllProducts";
 
 const App: React.FC = () => {
   return (
@@ -57,11 +54,54 @@ const App: React.FC = () => {
 
           <Route path="/search" element={<SearchResults />} />
 
-          <Route path="/admin/" element={<Dashboard />}></Route>
-          <Route path="/admin/dashboard" element={<Dashboard />}></Route>
-          <Route path="/admin/addProduct" element={<ProductForm />}></Route>
-          <Route path="/admin/feedback" element={<AdminFeedbackPage />}></Route>
-          <Route path="/admin/order" element={<AdminOrders />}></Route>
+          {/* <Route
+            path="/admin/"
+            element={
+              <AdminRoute>
+                <Dashboard />
+              </AdminRoute>
+            }
+          /> */}
+          {/* <Route
+              path="/admin/dashboard"
+              element={
+                <AdminRoute>
+                  <Dashboard />
+                </AdminRoute>
+              }
+            /> */}
+          <Route
+            path="/admin/productDetails"
+            element={
+              <AdminRoute>
+                <ProductTable />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/addProduct"
+            element={
+              <AdminRoute>
+                <ProductForm />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/feedback"
+            element={
+              <AdminRoute>
+                <AdminFeedbackPage />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/order"
+            element={
+              <AdminRoute>
+                <AdminOrders />
+              </AdminRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>

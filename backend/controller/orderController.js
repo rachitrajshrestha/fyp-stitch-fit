@@ -87,9 +87,11 @@ const getAllOrders = async (req, res) => {
         },
         {
           model: Measurement,
+          required: false,
         },
         {
           model: OrderItem,
+          required: false,
         },
       ],
     });

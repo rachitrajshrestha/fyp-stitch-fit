@@ -1,4 +1,5 @@
-import { ReactNode } from "react";
+import type React from "react";
+import type { ReactNode } from "react";
 import { AdminSidebar } from "./Sidebar";
 
 interface AdminLayoutProps {

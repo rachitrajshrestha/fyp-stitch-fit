@@ -15,29 +15,19 @@ interface Product {
   oldPrice?: number;
 }
 
-export const Card: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+interface CardProps {
+  products: Product[];
+}
 
-  useEffect(() => {
-    fetch("http://localhost:8081/products")
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching products:", err);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading)
+export const Card: React.FC<CardProps> = ({ products }) => {
+  if (products.length === 0) {
     return (
-      <div className="flex justify-center items-center min-h-screen text-gray-700">
-        <p>Loading products...</p>
+      <div className="w-full text-center py-12">
+        <h3 className="text-xl font-medium text-gray-700">No products found</h3>
+        <p className="text-gray-500 mt-2">Try adjusting your filters</p>
       </div>
     );
+  }
 
   return (
     <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

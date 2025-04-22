@@ -12,7 +12,6 @@ savePayment = async (req, res) => {
       signed_field_names,
       signature,
     } = req.body;
-    console.log("aayo?", req.body);
 
     const payment = await Payment.create({
       userId,
@@ -24,8 +23,6 @@ savePayment = async (req, res) => {
       signed_field_names,
       signature,
     });
-
-    console.log("hya?", Payment);
 
     res.status(200).json(payment);
   } catch (err) {

@@ -54,9 +54,11 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "wrong password" });
     }
 
-    const token = jwt.sign({ id: row[0].id }, process.env.JWT_KEY, {
-      expiresIn: "3h",
-    });
+    const token = jwt.sign(
+      { id: row[0].id, role: row[0].role },
+      process.env.JWT_KEY,
+      { expiresIn: "3h" }
+    );
 
     return res.status(201).json({ token: token });
   } catch (err) {

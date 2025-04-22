@@ -8,18 +8,27 @@ const getCartItems = async (req, res) => {
       return res.status(400).json({ error: "userId is required" });
     }
 
-    const cartItems = await Cart.findAll({
+    const cart = await Cart.findOne({
       where: { userId },
       include: [
         {
-          model: Product,
-          attributes: ["id", "name", "price", "imageUrl"],
+          model: CartItem,
+          attributes: ["id", "quantity"],
+          include: [
+            {
+              model: Product,
+              attributes: ["id", "name", "price", "imageUrl"],
+            },
+          ],
         },
       ],
     });
 
-    // console.log("User ID:", userId);
-    res.json(cartItems);
+    if (!cart) {
+      return res.status(200).json([]); // No cart yet
+    }
+
+    res.json(cart); // send the whole cart with CartItems and Products
   } catch (error) {
     console.log(error);
     res
@@ -77,19 +86,16 @@ const addToCart = async (req, res) => {
 
 const removeFromCart = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const deleted = await CartItem.destroy({ where: { id } });
-
-    if (!deleted) {
-      return res.status(404).json({ error: "Cart item not found" });
+    const { id } = req.params; // or req.body.id
+    if (!id) {
+      return res.status(400).json({ error: "Cart item ID is required" });
     }
 
+    await CartItem.destroy({ where: { id } });
     res.json({ message: "Item removed from cart" });
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Error removing item from cart", details: error.message });
+    console.error("Error removing item from cart:", error);
+    res.status(500).json({ error: "Failed to remove item" });
   }
 };
 
