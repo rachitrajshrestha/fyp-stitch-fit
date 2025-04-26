@@ -32,7 +32,7 @@ const createOrderAfterPayment = async (req, res) => {
       return res.status(400).json({ message: "Cart is empty" });
 
     const totalAmount = cartItems.reduce(
-      (sum, item) => sum + item.quantity * 1,
+      (sum, item) => sum + item.quantity * item.Product.price,
       0
     );
 
@@ -40,8 +40,6 @@ const createOrderAfterPayment = async (req, res) => {
       userId,
       totalAmount: totalAmount,
       paymentId: payment.id,
-      // addressId: selectedAddressId,
-      // measurementId: selectedMeasurementId,
     });
 
     console.log(cartItems);
@@ -73,24 +71,29 @@ const createOrderAfterPayment = async (req, res) => {
 
 const getAllOrders = async (req, res) => {
   try {
-    const userId = req.userId;
     const orders = await Order.findAll({
       include: [
         {
           model: User,
+          include: [
+            {
+              model: Address,
+              limit: 1,
+              order: [["createdAt", "DESC"]],
+            },
+            {
+              model: Measurement,
+              limit: 1,
+              order: [["createdAt", "DESC"]],
+            },
+          ],
         },
         {
           model: Payment,
         },
         {
-          model: Address,
-        },
-        {
-          model: Measurement,
-          required: false,
-        },
-        {
           model: OrderItem,
+          include: [{ model: Product }],
           required: false,
         },
       ],
@@ -115,8 +118,8 @@ const getUserOrders = async (req, res) => {
           include: [{ model: Product }],
         },
         { model: Payment },
-        { model: Measurement },
-        { model: Address },
+        // { model: Measurement },
+        // { model: Address },
       ],
       order: [["createdAt", "DESC"]],
     });

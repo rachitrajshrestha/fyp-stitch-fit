@@ -1,3 +1,7 @@
+import descImg from "../assets/stitchandfit/measurementImage/measurement description 1.jpg";
+import descImg1 from "../assets/stitchandfit/measurementImage/measurement description 2.jpg";
+import descImg2 from "../assets/stitchandfit/measurementImage/measurement description 3 .png";
+
 export default function HowToMeasure() {
   return (
     <div className="container mx-auto px-4">
@@ -21,7 +25,7 @@ export default function HowToMeasure() {
           <div className="flex flex-col items-center">
             <div className="relative h-64 w-full mb-4 rounded-lg overflow-hidden">
               <img
-                src="/placeholder.svg?height=300&width=250"
+                src={descImg}
                 alt="Bust/Chest measurement"
                 className="object-cover"
               />
@@ -36,7 +40,7 @@ export default function HowToMeasure() {
           <div className="flex flex-col items-center">
             <div className="relative h-64 w-full mb-4 rounded-lg overflow-hidden">
               <img
-                src="/placeholder.svg?height=300&width=250"
+                src={descImg1}
                 alt="Waist measurement"
                 className="object-cover"
               />
@@ -51,7 +55,7 @@ export default function HowToMeasure() {
           <div className="flex flex-col items-center">
             <div className="relative h-64 w-full mb-4 rounded-lg overflow-hidden">
               <img
-                src="/placeholder.svg?height=300&width=250"
+                src={descImg2}
                 alt="Hip measurement"
                 className="object-cover"
               />

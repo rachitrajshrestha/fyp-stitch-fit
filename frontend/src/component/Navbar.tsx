@@ -109,9 +109,6 @@ const Navbar: React.FC<NavbarProps> = ({ theme, setTheme }) => {
             <Link to="/product">Products</Link>
           </li>
           <li>
-            <Link to="/">Design</Link>
-          </li>
-          <li>
             <Link to="/measurements">Measurements</Link>
           </li>
           <li>

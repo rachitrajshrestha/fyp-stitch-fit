@@ -50,36 +50,31 @@ const ProductDescription: React.FC = () => {
   const addToCart = async () => {
     if (!product) return;
 
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
     try {
-      const token = localStorage.getItem("token");
-      const hasMeasurement = JSON.parse(
-        localStorage.getItem("hasMeasurement") || "false"
-      );
-
-      if (!hasMeasurement) {
-        // Redirect to measurement form with cart as redirect param
-        navigate("/measurements?redirect=cart");
-        return;
-      }
-
-      // Add to cart
-      const response = await fetch("http://localhost:8081/cart", {
-        method: "POST",
+      const response = await fetch("http://localhost:8081/measurements/check", {
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          productId: product.id,
-          quantity: quantity,
-        }),
       });
+      const data = await response.json();
 
-      if (!response.ok) throw new Error("Failed to add to cart");
-
-      navigate("/cart");
+      if (data.hasMeasurement) {
+        navigate(
+          `/measurements?redirect=cart&productId=${product.id}&quantity=${quantity}`
+        );
+      } else {
+        navigate(
+          `/measurements?redirect=cart&productId=${product.id}&quantity=${quantity}`
+        );
+      }
     } catch (error) {
-      console.error("Error adding to cart:", error);
+      console.error("Error checking measurement before cart:", error);
     }
   };
 
@@ -157,7 +152,7 @@ const ProductDescription: React.FC = () => {
                 </div>
                 <button
                   onClick={addToCart}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-md"
+                  className="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-md"
                 >
                   Add to Cart
                 </button>

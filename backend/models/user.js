@@ -6,6 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       User.hasMany(models.Cart, { foreignKey: "userId" });
       User.hasMany(models.Measurement, { foreignKey: "userId" });
+      User.hasMany(models.Address, { foreignKey: "userId" });
+      User.hasMany(models.Order, { foreignKey: "userId" });
     }
   }
 

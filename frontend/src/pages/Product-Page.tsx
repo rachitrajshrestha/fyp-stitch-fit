@@ -29,12 +29,13 @@ export const ProductPage: React.FC = () => {
   });
 
   const categories = [
-    "Blouses",
     "Party",
     "Formal",
     "Casual",
     "Occasion",
-    "Fabrics",
+    "Traditional",
+    "Bridal",
+    "Festives",
   ];
 
   useEffect(() => {

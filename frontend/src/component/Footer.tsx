@@ -6,14 +6,14 @@ export default function Footer() {
       <div className="footer-container">
         <div className="footer-main">
           <div className="footer-brand">
-            <h2>Company Name</h2>
+            <h2>Stitch & Fit</h2>
             <p>© {new Date().getFullYear()} All rights reserved.</p>
           </div>
 
           <nav className="footer-nav">
             <a href="/">Home</a>
             <a href="/product">Product</a>
-            <a href="/measurement">Measurement</a>
+            <a href="/measurements">Measurement</a>
             <a href="/about">About</a>
             <a href="/contact">Contact</a>
           </nav>

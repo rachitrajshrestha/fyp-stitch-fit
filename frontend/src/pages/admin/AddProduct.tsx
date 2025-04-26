@@ -14,7 +14,9 @@ const ProductForm = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
@@ -110,14 +112,22 @@ const ProductForm = () => {
             <label className="block text-sm font-medium text-gray-700">
               Category
             </label>
-            <input
-              type="text"
+            <select
               name="category"
               value={product.category}
               onChange={handleChange}
               className="w-full p-2 border rounded-md"
               required
-            />
+            >
+              <option value="">Select Category</option>
+              <option value="Party">Party</option>
+              <option value="Formal">Formal</option>
+              <option value="Casual">Casual</option>
+              <option value="Occasion">Occasion</option>
+              <option value="Traditional">Traditional</option>
+              <option value="Bridal">Bridal</option>
+              <option value="Festives">Festives</option>
+            </select>
           </div>
 
           <div>
@@ -144,7 +154,6 @@ const ProductForm = () => {
               className="w-full p-2 border rounded-md"
               required
             />
-            Select Image
           </div>
 
           <div className="flex justify-end">

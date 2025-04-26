@@ -48,7 +48,7 @@ export default function FeaturedSection() {
               href={`/products/${product.id}`}
               className="block"
             >
-              <div className="rounded-lg overflow-hidden transition-all duration-200 hover:shadow-lg">
+              <div className="rounded-lg overflow-hidden transition-all duration-200 hover:shadow-lg shadow-md border border-gray-200">
                 <div className="relative h-48 w-full bg-gray-100 overflow-hidden">
                   <img
                     src={`http://localhost:8081/${product.imageUrl}`}

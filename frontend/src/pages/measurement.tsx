@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../style/measurements.css";
 import Navbar from "../component/Navbar";
 import Footer from "../component/Footer";
+import descImg from "../assets/stitchandfit/measurementImage/measurement description 1.jpg";
+import descImg1 from "../assets/stitchandfit/measurementImage/measurement description 2.jpg";
+import descImg2 from "../assets/stitchandfit/measurementImage/measurement description 3 .png";
 
 const MeasurementForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -18,15 +21,73 @@ const MeasurementForm: React.FC = () => {
     thighWidth: "",
     calvesWidth: "",
   });
+  const [hasOldMeasurement, setHasOldMeasurement] = useState(false); // Track if old measurement exists
 
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const redirectPage = queryParams.get("redirect");
+  const productId = queryParams.get("productId");
+  const quantity = queryParams.get("quantity");
+
+  useEffect(() => {
+    // Check if user already has measurements
+    const checkOldMeasurement = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const response = await fetch("http://localhost:8081/measurements", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            if (data && data.length > 0) {
+              setHasOldMeasurement(true);
+            }
+          }
+        } catch (error) {
+          console.error("Error checking old measurement:", error);
+        }
+      }
+    };
+
+    checkOldMeasurement();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const addToCartAfterMeasurement = async (
+    productId: string,
+    quantity: string
+  ) => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch("http://localhost:8081/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          productId,
+          quantity,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to add to cart");
+
+      navigate("/cart");
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -52,8 +113,8 @@ const MeasurementForm: React.FC = () => {
         localStorage.setItem("hasMeasurement", "true");
         alert("Measurement saved successfully!");
 
-        if (redirectPage === "cart") {
-          navigate("/product");
+        if (redirectPage === "cart" && productId && quantity) {
+          await addToCartAfterMeasurement(productId, quantity); // Add the product to cart
         } else {
           navigate("/profile");
         }
@@ -65,14 +126,15 @@ const MeasurementForm: React.FC = () => {
     }
   };
 
+  const handleUseOldMeasurement = async () => {
+    if (productId && quantity) {
+      await addToCartAfterMeasurement(productId, quantity);
+    }
+  };
+
   return (
     <>
-      <Navbar
-        theme={"light"}
-        setTheme={function (theme: "light" | "dark"): void {
-          throw new Error("Function not implemented.");
-        }}
-      />
+      <Navbar theme={"light"} setTheme={() => {}} />
       <div className="container">
         <h1 className="page-title">Your Measurements</h1>
         <p className="page-description">
@@ -80,14 +142,13 @@ const MeasurementForm: React.FC = () => {
           perfectly. Follow the guide below.
         </p>
 
-        {/* Measurement Guide */}
         <div className="guide-section">
           <h2 className="section-title">How to Measure</h2>
           <div className="guide-cards">
             <div className="guide-card">
               <div className="img-container">
                 <img
-                  src="/placeholder.svg?height=300&width=300"
+                  src={descImg}
                   alt="How to measure chest/bust"
                   className="guide-img"
                 />
@@ -102,7 +163,7 @@ const MeasurementForm: React.FC = () => {
             <div className="guide-card">
               <div className="img-container">
                 <img
-                  src="/placeholder.svg?height=300&width=300"
+                  src={descImg1}
                   alt="How to measure waist"
                   className="guide-img"
                 />
@@ -117,7 +178,7 @@ const MeasurementForm: React.FC = () => {
             <div className="guide-card">
               <div className="img-container">
                 <img
-                  src="/placeholder.svg?height=300&width=300"
+                  src={descImg2}
                   alt="How to measure hips"
                   className="guide-img"
                 />
@@ -194,12 +255,21 @@ const MeasurementForm: React.FC = () => {
             <div className="mt-8 text-center">
               <button
                 type="submit"
-                className="bg-gray-900 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition duration-300"
+                className="bg-gray-800 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-600 transition duration-300"
               >
                 Save Measurements
               </button>
             </div>
           </form>
+
+          <div className="mt-6 text-center">
+            <button
+              onClick={handleUseOldMeasurement}
+              className="bg-gray-800 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-600 transition duration-300"
+            >
+              Use Old Measurement
+            </button>
+          </div>
         </div>
       </div>
       <Footer />

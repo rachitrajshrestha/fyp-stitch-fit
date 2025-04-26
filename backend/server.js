@@ -12,6 +12,7 @@ const orderRoutes = require("./routes/orderRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const searchRoutes = require("./routes/searchRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
 const fs = require("fs");
 const path = require("path");
@@ -41,6 +42,7 @@ app.use("/payment", paymentRoutes);
 // app.use("/category", categoryRoutes);
 app.use("/orders", orderRoutes);
 app.use("/search", searchRoutes);
+app.use("/dashboard", dashboardRoutes);
 
 app.listen(SERVER_PORT, async () => {
   console.log(`App is listening on PORT ${SERVER_PORT}`);

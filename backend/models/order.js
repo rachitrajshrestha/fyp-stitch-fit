@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Order.belongsTo(models.User, { foreignKey: "userId" });
       Order.belongsTo(models.Payment, { foreignKey: "paymentId" });
-      Order.belongsTo(models.Address, { foreignKey: "addressId" });
-      Order.belongsTo(models.Measurement, { foreignKey: "measurementId" });
+      // Order.belongsTo(models.Address, { foreignKey: "addressId" });
+      // Order.belongsTo(models.Measurement, { foreignKey: "measurementId" });
       Order.hasMany(models.OrderItem, { foreignKey: "orderId" });
     }
   }
@@ -30,22 +30,22 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
-      addressId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Addresses",
-          key: "id",
-        },
-      },
-      measurementId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Measurements",
-          key: "id",
-        },
-      },
+      // addressId: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: false,
+      //   references: {
+      //     model: "Addresses",
+      //     key: "id",
+      //   },
+      // },
+      // measurementId: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: false,
+      //   references: {
+      //     model: "Measurements",
+      //     key: "id",
+      //   },
+      // },
       status: {
         type: DataTypes.STRING,
         allowNull: false,

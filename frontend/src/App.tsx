@@ -21,6 +21,7 @@ import AdminOrders from "./pages/admin/Orders";
 import { UserOrders } from "./pages/Profile/OrderHistory";
 import { AdminRoute } from "./component/AdminRoute";
 import ProductTable from "./pages/admin/AllProducts";
+import { Dashboard } from "./pages/admin/Dashboard";
 
 const App: React.FC = () => {
   return (
@@ -54,22 +55,22 @@ const App: React.FC = () => {
 
           <Route path="/search" element={<SearchResults />} />
 
-          {/* <Route
+          <Route
             path="/admin/"
             element={
               <AdminRoute>
                 <Dashboard />
               </AdminRoute>
             }
-          /> */}
-          {/* <Route
-              path="/admin/dashboard"
-              element={
-                <AdminRoute>
-                  <Dashboard />
-                </AdminRoute>
-              }
-            /> */}
+          />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <AdminRoute>
+                <Dashboard />
+              </AdminRoute>
+            }
+          />
           <Route
             path="/admin/productDetails"
             element={

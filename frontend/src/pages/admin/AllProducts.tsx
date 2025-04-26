@@ -216,7 +216,7 @@ const ProductTable: React.FC = () => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Price ($)
+                        Price (Rs)
                       </label>
                       <input
                         type="number"
@@ -372,7 +372,7 @@ const ProductTable: React.FC = () => {
                         </td>
                         <td className="py-4 px-6 text-right">
                           <span className="text-lg font-bold text-gray-900">
-                            ${product.price.toFixed(2)}
+                            Rs{product.price.toFixed(2)}
                           </span>
                         </td>
                         <td className="py-4 px-6 text-center">

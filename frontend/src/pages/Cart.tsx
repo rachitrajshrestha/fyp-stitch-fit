@@ -106,21 +106,21 @@ const CartPage = () => {
                   key={item.id}
                   className="border rounded-lg overflow-hidden shadow-sm"
                 >
-                  <div className="p-4 flex flex-col sm:flex-row gap-4">
-                    <div className="flex-shrink-0">
+                  <div className="p-4 flex flex-col sm:flex-row gap-4 ">
+                    <div className="w-[100px] h-[100px] flex-shrink-0">
                       <img
                         src={`http://localhost:8081/${item.product.imageUrl}`}
                         alt={item.product.name}
                         width={100}
                         height={100}
-                        className="rounded-md object-cover"
+                        className="w-full h-full object-contain rounded-md bg-white"
                       />
                     </div>
                     <div className="flex-1 space-y-2">
                       <div className="flex justify-between">
                         <h3 className="font-medium">{item.product.name}</h3>
                         <p className="font-medium">
-                          ${item.product.price.toFixed(2)}
+                          Rs {item.product.price.toFixed(2)}
                         </p>
                       </div>
                       <div className="flex items-center justify-between">
@@ -158,20 +158,20 @@ const CartPage = () => {
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-gray-500">Subtotal</span>
-                      <span>${subtotal.toFixed(2)}</span>
+                      <span>Rs{subtotal.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500">Shipping</span>
-                      <span>${shipping.toFixed(2)}</span>
+                      <span>Rs{shipping.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500">Tax</span>
-                      <span>${tax.toFixed(2)}</span>
+                      <span>Rs{tax.toFixed(2)}</span>
                     </div>
                     <hr className="my-2 border-gray-200" />
                     <div className="flex justify-between font-medium">
                       <span>Total</span>
-                      <span>${total.toFixed(2)}</span>
+                      <span>Rs{total.toFixed(2)}</span>
                     </div>
                   </div>
                 </div>

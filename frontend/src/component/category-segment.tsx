@@ -1,9 +1,11 @@
-import categoryBlouse from "../assets/stitchandfit/blouse10.jpg";
-import categoryParty from "../assets/stitchandfit/dress4.jpg";
-import categoryFormal from "../assets/stitchandfit/formals0.jpg";
-import categoryCasual from "../assets/stitchandfit/dress5.jpg";
-import categoryOccasion from "../assets/stitchandfit/lehenga0.jpg";
-import categoryFabrics from "../assets/stitchandfit/blouse10.jpg";
+import categoryBridal from "../assets/stitchandfit/category/blouse10.jpg";
+import categoryParty from "../assets/stitchandfit/category/dress4.jpg";
+import categoryFormal from "../assets/stitchandfit/category/formals0.jpg";
+import categoryCasual from "../assets/stitchandfit/category/dress5.jpg";
+import categoryOccasion from "../assets/stitchandfit/category/lehenga0.jpg";
+import categoryTraditional from "../assets/stitchandfit/category/traditional.jpg";
+import categoryFestive from "../assets/stitchandfit/category/kurtha1.jpg";
+
 import { Link } from "react-router-dom";
 
 interface Category {
@@ -14,12 +16,13 @@ interface Category {
 
 export default function CategorySegment() {
   const categories: Category[] = [
-    { name: "Blouses", img: categoryBlouse, slug: "blouses" },
     { name: "Party", img: categoryParty, slug: "party" },
     { name: "Formal", img: categoryFormal, slug: "formal" },
     { name: "Casual", img: categoryCasual, slug: "casual" },
     { name: "Occasion", img: categoryOccasion, slug: "occasion" },
-    { name: "Fabrics", img: categoryFabrics, slug: "fabrics" },
+    { name: "Traditional", img: categoryTraditional, slug: "traditional" },
+    { name: "Bridal", img: categoryBridal, slug: "bridal" },
+    { name: "Festives", img: categoryFestive, slug: "festives" },
   ];
 
   return (
