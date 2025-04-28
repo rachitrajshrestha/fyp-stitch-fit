@@ -54,6 +54,9 @@ const hasMeasurement = async (req, res) => {
   try {
     const userId = req.userId;
     const measurement = await Measurement.findOne({ where: { userId } });
+    console.log("user ho", userId);
+    console.log("measurement", measurement);
+    console.log();
     if (measurement) {
       return res.json({ hasMeasurement: true });
     } else {

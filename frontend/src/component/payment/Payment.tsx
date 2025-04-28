@@ -9,9 +9,6 @@ export const Payment = () => {
   const transaction_uuid = uuidv4();
   const total_amount = location.state?.totalAmount;
 
-  console.log("Transaction UUID:", transaction_uuid);
-  console.log("Total Amount:", total_amount);
-
   const message = `total_amount=${total_amount},transaction_uuid=${transaction_uuid},product_code=EPAYTEST`;
   const hash = CryptoJS.HmacSHA256(message, "8gBm/:&EnhH.1/q");
   const hashInBase64 = CryptoJS.enc.Base64.stringify(hash);

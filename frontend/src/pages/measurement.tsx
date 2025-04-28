@@ -21,7 +21,6 @@ const MeasurementForm: React.FC = () => {
     thighWidth: "",
     calvesWidth: "",
   });
-  const [hasOldMeasurement, setHasOldMeasurement] = useState(false); // Track if old measurement exists
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -29,26 +28,33 @@ const MeasurementForm: React.FC = () => {
   const redirectPage = queryParams.get("redirect");
   const productId = queryParams.get("productId");
   const quantity = queryParams.get("quantity");
+  const [hasOldMeasurement, setHasOldMeasurement] = useState(false);
 
   useEffect(() => {
-    // Check if user already has measurements
     const checkOldMeasurement = async () => {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const response = await fetch("http://localhost:8081/measurements", {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          const response = await fetch(
+            "http://localhost:8081/measurements/check",
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
 
           if (response.ok) {
             const data = await response.json();
-            if (data && data.length > 0) {
+            if (data.hasMeasurement) {
               setHasOldMeasurement(true);
             }
+
+            console.log("data", data);
+            console.log(hasOldMeasurement);
+            console.log(setHasOldMeasurement);
           }
         } catch (error) {
           console.error("Error checking old measurement:", error);
@@ -114,7 +120,7 @@ const MeasurementForm: React.FC = () => {
         alert("Measurement saved successfully!");
 
         if (redirectPage === "cart" && productId && quantity) {
-          await addToCartAfterMeasurement(productId, quantity); // Add the product to cart
+          await addToCartAfterMeasurement(productId, quantity);
         } else {
           navigate("/profile");
         }
@@ -262,14 +268,16 @@ const MeasurementForm: React.FC = () => {
             </div>
           </form>
 
-          <div className="mt-6 text-center">
-            <button
-              onClick={handleUseOldMeasurement}
-              className="bg-gray-800 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-600 transition duration-300"
-            >
-              Use Old Measurement
-            </button>
-          </div>
+          {hasOldMeasurement && (
+            <div className="mt-6 text-center">
+              <button
+                onClick={handleUseOldMeasurement}
+                className="bg-gray-800 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-600 transition duration-300"
+              >
+                Use Old Measurement
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <Footer />
