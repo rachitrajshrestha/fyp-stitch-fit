@@ -3,6 +3,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import background from "../assets/stitchandfit/banner/lb2.jpg";
 
 export const Register: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -59,9 +60,26 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-      <div className="w-full max-w-md rounded-lg border border-gray-200 bg-white shadow-md">
-        <div className="p-6">
+    <div className="flex flex-col md:flex-row min-h-screen">
+      <div className="w-full md:w-1/2 relative min-h-[300px] md:min-h-screen">
+        <img
+          src={background}
+          alt="Login Background"
+          className="object-cover h-[735px] w-full"
+        />
+        <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+          <div className="text-white text-center p-6 max-w-md">
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">
+              Welcome Back
+            </h1>
+            <p className="text-lg md:text-xl">
+              Sign in to continue your journey
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="w-full md:w-1/2 flex items-center justify-center p-6 md:p-12 bg-white">
+        <div className="w-full max-w-md">
           <h2 className="text-2xl font-bold text-gray-900 text-center">
             Create an account
           </h2>

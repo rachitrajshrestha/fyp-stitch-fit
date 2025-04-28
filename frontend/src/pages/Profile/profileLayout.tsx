@@ -92,7 +92,6 @@ export function ProfileLayout({ children }: ProfileLayoutProps) {
     }
   };
 
-  // Close mobile menu when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -112,7 +111,6 @@ export function ProfileLayout({ children }: ProfileLayoutProps) {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row gap-8">
-        {/* Mobile sidebar trigger */}
         <div className="md:hidden flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold">My Account</h1>
           <button
@@ -139,7 +137,6 @@ export function ProfileLayout({ children }: ProfileLayoutProps) {
             <span className="sr-only">Toggle menu</span>
           </button>
 
-          {/* Mobile menu */}
           {mobileMenuOpen && (
             <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-start">
               <div
@@ -191,7 +188,6 @@ export function ProfileLayout({ children }: ProfileLayoutProps) {
           )}
         </div>
 
-        {/* Desktop sidebar */}
         <aside className="hidden md:block w-64 shrink-0">
           <div className="sticky top-8">
             <h2 className="text-xl font-semibold mb-4">My Account</h2>
@@ -214,7 +210,6 @@ export function ProfileLayout({ children }: ProfileLayoutProps) {
           </div>
         </aside>
 
-        {/* Main content */}
         <main className="flex-1">{children}</main>
       </div>
     </div>

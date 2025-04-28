@@ -126,7 +126,7 @@ const AdminOrders = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `http://localhost:8081/orders/admin/${orderId}`,
+        `http://localhost:8081/orders/${orderId}`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -421,7 +421,7 @@ const AdminOrders = () => {
                                           {item.Product?.imageUrl ? (
                                             <img
                                               src={
-                                                item.Product.imageUrl ||
+                                                `http://localhost:8081/${item.Product.imageUrl}` ||
                                                 "/placeholder.svg"
                                               }
                                               alt={item.Product.name}

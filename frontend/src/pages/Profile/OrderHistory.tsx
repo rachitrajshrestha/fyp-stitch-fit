@@ -51,7 +51,7 @@ export const UserOrders = () => {
           >
             <div className="flex justify-between mb-2">
               <div>
-                <p className="font-semibold">Order #{order.id}</p>
+                <p className="font-semibold">Order</p>
                 <p className="text-sm text-gray-500">
                   Placed: {new Date(order.createdAt).toLocaleDateString()}
                 </p>
@@ -65,7 +65,10 @@ export const UserOrders = () => {
               {order.OrderItems.map((item, idx) => (
                 <li key={idx} className="py-2 flex gap-4">
                   <img
-                    src={item.Product.imageUrl || "/placeholder.png"}
+                    src={
+                      `http://localhost:8081/${item.Product.imageUrl}` ||
+                      "/placeholder.png"
+                    }
                     alt={item.Product.name}
                     className="w-16 h-16 rounded object-cover"
                   />

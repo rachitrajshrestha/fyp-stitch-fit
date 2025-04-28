@@ -1,8 +1,9 @@
-"use client";
+("use client");
 
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import background from "../assets/stitchandfit/banner/lb3.jpg";
 import { jwtDecode } from "jwt-decode";
 
 export default function LoginPage() {
@@ -53,17 +54,6 @@ export default function LoginPage() {
         if (decoded.role === "admin") {
           navigate("/admin/dashboard");
         } else {
-          const measurementRes = await axios.get(
-            "http://localhost:8081/measurements/has-measurement",
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          );
-          const hasMeasurement = measurementRes.data.hasMeasurement;
-          localStorage.setItem(
-            "hasMeasurement",
-            JSON.stringify(hasMeasurement)
-          );
           navigate("/");
         }
       }
@@ -73,67 +63,90 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-      <div className="w-full max-w-md rounded-lg border border-gray-200 bg-white shadow-md p-6">
-        <h2 className="text-2xl font-bold text-center text-gray-900">Login</h2>
-        <p className="mt-1 text-sm text-center text-gray-500">
-          Enter your credentials to access your account
-        </p>
-        <form onSubmit={handleSubmit} className="mt-4 space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              className="w-full rounded-md border px-4 py-2 focus:border-gray-500 focus:ring-gray-500"
-              value={formValues.email}
-              onChange={handleInputChange}
-            />
+    <div className="flex flex-col md:flex-row min-h-screen">
+      <div className="w-full md:w-1/2 relative min-h-[300px] md:min-h-screen">
+        <img
+          src={background}
+          alt="Login Background"
+          className="object-cover h-[735px] w-full"
+        />
+        <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+          <div className="text-white text-center p-6 max-w-md">
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">
+              Welcome Back
+            </h1>
+            <p className="text-lg md:text-xl">
+              Sign in to continue your journey
+            </p>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <div className="relative">
+        </div>
+      </div>
+      <div className="w-full md:w-1/2 flex items-center justify-center p-6 md:p-12 bg-white">
+        <div className="w-full max-w-md">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            Login to your account
+          </h2>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Email
+              </label>
               <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                className="w-full rounded-md border px-4 py-2 focus:border-gray-500 focus:ring-gray-500"
-                value={formValues.password}
+                type="email"
+                name="email"
+                className="w-full rounded-md border border-gray-300 px-4 py-2 focus:border-gray-500 focus:ring-gray-500"
+                value={formValues.email}
                 onChange={handleInputChange}
               />
-              <button
-                type="button"
-                className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? "Hide" : "Show"}
-              </button>
             </div>
-          </div>
-          {error && (
-            <div className="rounded-md bg-red-50 p-3 text-sm text-red-600">
-              {error}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  className="w-full rounded-md border border-gray-300 px-4 py-2 focus:border-gray-500 focus:ring-gray-500"
+                  value={formValues.password}
+                  onChange={handleInputChange}
+                />
+                <button
+                  type="button"
+                  className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </button>
+              </div>
             </div>
-          )}
-          <button
-            type="submit"
-            className="w-full bg-gray-900 text-white py-2 rounded-md hover:bg-gray-800"
-          >
-            Login
-          </button>
-          <div className="mt-4 text-center text-sm">
-            Don't have an account?{" "}
-            <a
-              href="/register"
-              className="text-gray-900 underline hover:text-gray-700"
+
+            {error && (
+              <div className="rounded-md bg-red-50 p-3 text-sm text-red-600">
+                {error}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="w-full bg-gray-900 text-white py-3 rounded-md hover:bg-gray-800 transition-colors"
             >
-              Sign up
-            </a>
-          </div>
-        </form>
+              Sign In
+            </button>
+
+            <div className="text-center text-sm text-gray-600">
+              Don't have an account?{" "}
+              <a
+                href="/register"
+                className="text-gray-900 font-medium hover:underline"
+              >
+                Sign up
+              </a>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

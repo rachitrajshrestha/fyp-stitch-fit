@@ -22,6 +22,7 @@ import { UserOrders } from "./pages/Profile/OrderHistory";
 import { AdminRoute } from "./component/AdminRoute";
 import ProductTable from "./pages/admin/AllProducts";
 import { Dashboard } from "./pages/admin/Dashboard";
+import OrderSuccess from "./pages/CompleteOrder";
 
 const App: React.FC = () => {
   return (
@@ -42,6 +43,7 @@ const App: React.FC = () => {
           <Route path="/cart" element={<Cart />}></Route>
           <Route path="/measurements" element={<MeasurementForm />}></Route>
           <Route path="/add-address" element={<AddressDetails />} />
+          <Route path="/order-success" element={<OrderSuccess />} />
 
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />

@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { User, Mail, Phone, Home, MapPinned, Building, X } from "lucide-react";
 import Navbar from "../component/Navbar";
 import Footer from "../component/Footer";
+import esewa from "../assets/esewa-icon.png";
 
 export default function AddressPage() {
   const location = useLocation();
@@ -68,19 +69,17 @@ export default function AddressPage() {
       return;
     }
 
+    setIsSubmitting(true);
     try {
-      setIsSubmitting(true);
-      const result = await saveAddress(formData, token);
-
-      if (result.success) {
-        if (formData.paymentMethod === "cod") {
+      if (formData.paymentMethod === "cod") {
+        const result = await saveAddress(formData, token);
+        if (result.success) {
           navigate("/order-summary");
         } else {
-          // For online payment, we'll handle this in the modal
-          setShowModal(true);
+          alert("Failed to submit address");
         }
       } else {
-        alert("Failed to submit address");
+        setShowModal(true);
       }
     } catch (error) {
       console.error("Error submitting address:", error);
@@ -91,12 +90,9 @@ export default function AddressPage() {
   };
 
   const handleEsewaPayment = async () => {
-    // Set payment method to online if not already set
     if (formData.paymentMethod !== "online") {
       setFormData((prev) => ({ ...prev, paymentMethod: "online" }));
     }
-
-    // Get token
     const token = localStorage.getItem("token");
     if (!token) {
       alert("Please log in.");
@@ -106,11 +102,9 @@ export default function AddressPage() {
     try {
       setIsSubmitting(true);
 
-      // Submit the address form data
       const result = await saveAddress(formData, token);
 
       if (result.success) {
-        // If address saved successfully, redirect to payment page
         navigate("/payment", { state: { totalAmount: totalPrice } });
       } else {
         alert("Failed to submit address. Please try again.");
@@ -428,7 +422,7 @@ export default function AddressPage() {
                   >
                     <div className="flex items-center">
                       <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
-                        <span className="text-green-600 font-bold">e</span>
+                        <img src={esewa} alt="esewa" />
                       </div>
                       <div>
                         <p className="font-medium text-gray-900">eSewa</p>

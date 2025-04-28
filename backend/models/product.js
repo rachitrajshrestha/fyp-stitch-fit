@@ -33,8 +33,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "instock",
+      },
       imageUrl: {
-        type: DataTypes.STRING, // Store image URL
+        type: DataTypes.STRING,
         allowNull: true,
       },
     },

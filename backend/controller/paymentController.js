@@ -13,6 +13,8 @@ savePayment = async (req, res) => {
       signature,
     } = req.body;
 
+    console.log("hitting api");
+
     const payment = await Payment.create({
       userId,
       transaction_code,

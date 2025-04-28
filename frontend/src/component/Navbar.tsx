@@ -162,9 +162,6 @@ const Navbar: React.FC<NavbarProps> = ({ theme, setTheme }) => {
                     <Link to="/profile" className="dropdown-item">
                       Profile
                     </Link>
-                    <Link to="/orders" className="dropdown-item">
-                      My Orders
-                    </Link>
                     <button
                       onClick={handleLogout}
                       className="dropdown-item logout-btn"

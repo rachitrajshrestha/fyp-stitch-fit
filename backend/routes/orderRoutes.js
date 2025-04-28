@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const orderController = require("../controller/orderController"); // ✅ Import the whole controller
+const orderController = require("../controller/orderController");
 const verifyToken = require("../middleware/verifyToken");
 
 router.post(
@@ -10,6 +10,7 @@ router.post(
 );
 router.get("/admin", verifyToken, orderController.getAllOrders);
 router.get("/user", verifyToken, orderController.getUserOrders);
+router.get("/user/:orderId", verifyToken, orderController.getOrderById);
 router.put("/:orderId", verifyToken, orderController.updateOrderStatus);
 
 module.exports = router;

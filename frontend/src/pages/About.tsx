@@ -27,17 +27,18 @@ export default function About() {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <p className="mb-4">
-                  Founded in 2020, our company began with a simple mission: to
-                  make technology more accessible and user-friendly for
-                  everyone. What started as a small team of three has now grown
-                  into a diverse group of professionals united by our passion
-                  for innovation.
-                </p>
-                <p className="mb-4">
-                  Over the years, we've worked with clients across various
-                  industries, helping them transform their ideas into reality.
-                  Our journey hasn't always been smooth, but each challenge has
-                  only strengthened our resolve and expanded our expertise.
+                  Stitch and Fit stands up as an innovative platform that gives
+                  customers the freedom to build their own style. Our proposal
+                  is a perfect blend of technology and creativity, providing an
+                  interactive solution in which customers can browse a wide
+                  selection of styles, select the best suit for their needs, and
+                  even personalize costumes with their own unique ideas. Stitch
+                  and Fit's easy interface allows consumers to easily provide
+                  their measurements, guaranteeing that each piece is fitted to
+                  perfection. This platform not only updates the way people
+                  shop, but also promotes uniqueness and acceptance by
+                  responding to a variety of body measurements and fashionable
+                  preferences.
                 </p>
                 <p>
                   Today, we continue to push boundaries and explore new

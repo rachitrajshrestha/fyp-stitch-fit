@@ -24,11 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       paymentId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Payments",
-          key: "id",
-        },
+        unique: true,
       },
       // addressId: {
       //   type: DataTypes.INTEGER,

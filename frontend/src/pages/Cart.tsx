@@ -22,6 +22,7 @@ interface CartItem {
 const CartPage = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const navigate = useNavigate();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -67,6 +68,8 @@ const CartPage = () => {
   };
 
   const handleCheckout = () => {
+    if (isProcessing) return;
+    setIsProcessing(true);
     const totalPrice = cart.reduce(
       (acc, item) => acc + item.product.price * item.quantity,
       0

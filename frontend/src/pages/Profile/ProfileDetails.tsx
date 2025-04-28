@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import userProfile from "../../assets/profile.png";
 
 export const ProfileDetails = () => {
   const [user, setUser] = useState<any>(null);
@@ -27,14 +28,14 @@ export const ProfileDetails = () => {
           <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
             <div className="relative h-20 w-20 rounded-full overflow-hidden bg-gray-200">
               <img
-                src="/placeholder.svg?height=80&width=80"
+                src={userProfile}
                 alt="Profile picture"
                 className="h-full w-full object-cover"
               />
             </div>
             <div>
               <h3 className="text-xl font-semibold">{user.username}</h3>
-              <p className="text-sm text-gray-500">Member since January 2023</p>
+              <p className="text-sm text-gray-500">Since {user.createdAt}</p>
             </div>
           </div>
         </div>

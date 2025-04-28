@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import AdminLayout from "./AdminLayout";
 import { Edit, Trash2, Search, Plus, X, Save, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 interface Product {
   id: number;
@@ -13,6 +14,7 @@ interface Product {
   description: string;
   category: string;
   imageUrl: string;
+  status: string; // New field for status
 }
 
 const ProductTable: React.FC = () => {
@@ -58,43 +60,26 @@ const ProductTable: React.FC = () => {
     }
   };
 
-  const handleEditClick = (product: Product) => {
-    setEditingProduct(product);
-    setFormData({
-      name: product.name,
-      price: product.price.toString(),
-      description: product.description,
-      category: product.category,
-      imageUrl: product.imageUrl,
-    });
-  };
+  const updateProductStatus = async (productId: number, status: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.put(
+        `http://localhost:8081/products/admin/${productId}`,
+        { status },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-  const handleUpdate = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!editingProduct) return;
+      const updatedProduct = res.data.product;
 
-    fetch(`http://localhost:5000/products/${editingProduct.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...formData,
-        price: Number.parseFloat(formData.price),
-      }),
-    })
-      .then((res) => res.json())
-      .then(() => {
-        setEditingProduct(null);
-        fetchProducts(); // Refresh product list
-      })
-      .catch((err) => console.error("Error updating product:", err));
-  };
-
-  const handleSort = (field: keyof Product) => {
-    if (field === sortField) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(field);
-      setSortDirection("asc");
+      setProducts((prevProducts) =>
+        prevProducts.map((product) =>
+          product.id === productId
+            ? { ...product, status: updatedProduct.status }
+            : product
+        )
+      );
+    } catch (error) {
+      console.error("Failed to update product status:", error);
     }
   };
 
@@ -184,115 +169,6 @@ const ProductTable: React.FC = () => {
               </div>
             </div>
 
-            {editingProduct && (
-              <div className="mb-8 p-6 border border-gray-300 rounded-lg bg-gray-50">
-                <form onSubmit={handleUpdate}>
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-xl font-semibold text-gray-800">
-                      Edit Product
-                    </h3>
-                    <button
-                      type="button"
-                      onClick={() => setEditingProduct(null)}
-                      className="text-gray-500 hover:text-gray-700"
-                    >
-                      <X size={20} />
-                    </button>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Product Name
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Name"
-                        value={formData.name}
-                        onChange={(e) =>
-                          setFormData({ ...formData, name: e.target.value })
-                        }
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-700"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Price (Rs)
-                      </label>
-                      <input
-                        type="number"
-                        placeholder="Price"
-                        value={formData.price}
-                        onChange={(e) =>
-                          setFormData({ ...formData, price: e.target.value })
-                        }
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-700"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Category
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Category"
-                        value={formData.category}
-                        onChange={(e) =>
-                          setFormData({ ...formData, category: e.target.value })
-                        }
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-700"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Image URL
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Image URL"
-                        value={formData.imageUrl}
-                        onChange={(e) =>
-                          setFormData({ ...formData, imageUrl: e.target.value })
-                        }
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-700"
-                      />
-                    </div>
-                    <div className="md:col-span-2">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Description
-                      </label>
-                      <textarea
-                        placeholder="Description"
-                        value={formData.description}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            description: e.target.value,
-                          })
-                        }
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-700 min-h-[100px]"
-                      />
-                    </div>
-                  </div>
-                  <div className="mt-6 flex justify-end gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setEditingProduct(null)}
-                      className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
-                    >
-                      <Save size={18} />
-                      Save Changes
-                    </button>
-                  </div>
-                </form>
-              </div>
-            )}
-
             <div className="overflow-x-auto">
               {filteredProducts.length > 0 ? (
                 <table className="w-full">
@@ -302,29 +178,16 @@ const ProductTable: React.FC = () => {
                         Product
                       </th>
                       <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
-                        <button
-                          onClick={() => handleSort("category")}
-                          className="flex items-center gap-1 hover:text-gray-900"
-                        >
-                          Category
-                          {sortField === "category" && (
-                            <span>{sortDirection === "asc" ? "↑" : "↓"}</span>
-                          )}
-                        </button>
+                        Category
                       </th>
                       <th className="py-4 px-6 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                         Description
                       </th>
                       <th className="py-4 px-6 text-right text-sm font-medium text-gray-500 uppercase tracking-wider">
-                        <button
-                          onClick={() => handleSort("price")}
-                          className="flex items-center gap-1 hover:text-gray-900 ml-auto"
-                        >
-                          Price
-                          {sortField === "price" && (
-                            <span>{sortDirection === "asc" ? "↑" : "↓"}</span>
-                          )}
-                        </button>
+                        Price
+                      </th>
+                      <th className="py-4 px-6 text-center text-sm font-medium text-gray-500 uppercase tracking-wider">
+                        Stock Status
                       </th>
                       <th className="py-4 px-6 text-center text-sm font-medium text-gray-500 uppercase tracking-wider">
                         Actions
@@ -333,111 +196,59 @@ const ProductTable: React.FC = () => {
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     {filteredProducts.map((product) => (
-                      <tr
-                        key={product.id}
-                        className="hover:bg-gray-50 transition-colors"
-                      >
+                      <tr key={product.id} className="hover:bg-gray-50">
                         <td className="py-4 px-6">
                           <div className="flex items-center gap-4">
-                            <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 bg-gray-100">
-                              <img
-                                src={`http://localhost:8081/${product.imageUrl}`}
-                                alt={product.name}
-                                className="h-full w-full object-cover object-center"
-                                onError={(e) => {
-                                  (e.target as HTMLImageElement).src =
-                                    "/placeholder.svg?height=64&width=64";
-                                }}
-                              />
-                            </div>
-                            <div>
-                              <h3 className="text-base font-medium text-gray-900">
-                                {product.name}
-                              </h3>
-                              <p className="text-sm text-gray-500">
-                                ID: {product.id}
-                              </p>
-                            </div>
+                            <img
+                              src={`http://localhost:8081/${product.imageUrl}`}
+                              className="h-12 w-12 object-cover rounded-md"
+                              alt={product.name}
+                            />
+                            <span className="font-medium text-gray-800">
+                              {product.name}
+                            </span>
                           </div>
                         </td>
-                        <td className="py-4 px-6">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800">
-                            {product.category}
-                          </span>
-                        </td>
-                        <td className="py-4 px-6">
-                          <p className="text-sm text-gray-500 line-clamp-2">
-                            {product.description}
-                          </p>
+
+                        <td className="py-4 px-6">{product.category}</td>
+                        <td className="py-4 px-6 max-w-xs text-gray-700">
+                          {product.description.length > 80
+                            ? `${product.description.slice(0, 80)}...`
+                            : product.description}
                         </td>
                         <td className="py-4 px-6 text-right">
-                          <span className="text-lg font-bold text-gray-900">
-                            Rs{product.price.toFixed(2)}
-                          </span>
+                          ${product.price}
                         </td>
                         <td className="py-4 px-6 text-center">
-                          <div className="flex justify-center gap-2">
-                            <button
-                              onClick={() => handleEditClick(product)}
-                              className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
-                              title="Edit product"
-                            >
-                              <Edit size={18} />
-                              <span className="sr-only">Edit</span>
-                            </button>
-                            <button
-                              onClick={() => deleteProduct(product.id)}
-                              className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"
-                              title="Delete product"
-                            >
-                              <Trash2 size={18} />
-                              <span className="sr-only">Delete</span>
-                            </button>
-                          </div>
+                          <select
+                            value={product.status ?? ""}
+                            onChange={(e) =>
+                              updateProductStatus(product.id, e.target.value)
+                            }
+                            className="bg-gray-100 border border-gray-300 text-gray-700 py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-700"
+                          >
+                            <option value="instock">In Stock</option>
+                            <option value="outofstock">Out of Stock</option>
+                          </select>
+                        </td>
+                        <td className="py-4 px-6 text-center">
+                          <button
+                            onClick={() => deleteProduct(product.id)}
+                            className="text-red-600 hover:text-red-800 ml-3"
+                          >
+                            <Trash2 size={18} />
+                          </button>
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               ) : (
-                <div className="text-center py-12">
-                  <div className="mx-auto h-24 w-24 text-gray-400 mb-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1}
-                        d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-1">
-                    No products found
-                  </h3>
-                  <p className="text-gray-500">
-                    {searchTerm
-                      ? "Try adjusting your search term"
-                      : "Add some products to get started"}
-                  </p>
-                </div>
+                <p className="text-center py-6 text-gray-500">
+                  No products found.
+                </p>
               )}
             </div>
-
-            {filteredProducts.length > 0 && (
-              <div className="mt-6 flex justify-between items-center text-sm text-gray-500">
-                <div>
-                  Showing{" "}
-                  <span className="font-medium">{filteredProducts.length}</span>{" "}
-                  of <span className="font-medium">{products.length}</span>{" "}
-                  products
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>

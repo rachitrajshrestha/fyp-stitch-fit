@@ -113,6 +113,28 @@ const searchProducts = async (req, res) => {
   }
 };
 
+const updateProductStatus = async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const { status } = req.body;
+
+    if (!["instock", "outofstock"].includes(status)) {
+      return res.status(400).json({ message: "Invalid status" });
+    }
+
+    const product = await Product.findByPk(productId);
+    if (!product) return res.status(404).json({ message: "Product not found" });
+
+    product.status = status;
+    await product.save();
+
+    res.status(200).json({ message: "Product status updated", product });
+  } catch (err) {
+    console.error("Error updating product status:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 module.exports = {
   getAllProducts,
   getProducts,
@@ -121,4 +143,5 @@ module.exports = {
   deleteProduct,
   updateProduct,
   searchProducts,
+  updateProductStatus,
 };

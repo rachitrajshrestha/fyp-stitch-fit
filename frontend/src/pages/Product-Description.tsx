@@ -8,6 +8,8 @@ import FeaturedSection from "../component/featured-section";
 import Footer from "../component/Footer";
 
 export interface Product {
+  stock: string;
+  status: string;
   imageUrl: string;
   id: number;
   name: string;
@@ -23,6 +25,7 @@ const ProductDescription: React.FC = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [quantity, setQuantity] = useState<number>(1);
+  const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
 
   useEffect(() => {
     const id = Number(productId);
@@ -48,7 +51,15 @@ const ProductDescription: React.FC = () => {
   }, [productId]);
 
   const addToCart = async () => {
+    if (isSubmittingOrder) return;
+    setIsSubmittingOrder(true);
     if (!product) return;
+
+    if (product.status === "outofstock") {
+      alert("This product is out of stock!");
+      navigate("/products");
+      return;
+    }
 
     const token = localStorage.getItem("token");
     if (!token) {
@@ -64,15 +75,9 @@ const ProductDescription: React.FC = () => {
       });
       const data = await response.json();
 
-      if (data.hasMeasurement) {
-        navigate(
-          `/measurements?redirect=cart&productId=${product.id}&quantity=${quantity}`
-        );
-      } else {
-        navigate(
-          `/measurements?redirect=cart&productId=${product.id}&quantity=${quantity}`
-        );
-      }
+      navigate(
+        `/measurements?redirect=cart&productId=${product.id}&quantity=${quantity}`
+      );
     } catch (error) {
       console.error("Error checking measurement before cart:", error);
     }
@@ -89,9 +94,7 @@ const ProductDescription: React.FC = () => {
     <>
       <Navbar
         theme={"light"}
-        setTheme={(theme: "light" | "dark"): void => {
-          throw new Error("Function not implemented.");
-        }}
+        setTheme={(theme: "light" | "dark"): void => {}}
       />
       <main className="container mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-md overflow-hidden mb-12">
@@ -106,24 +109,23 @@ const ProductDescription: React.FC = () => {
               </div>
             </div>
             <div className="md:w-1/2 p-6 md:p-8">
-              <div className="text-sm text-green-600 font-semibold mb-2">
-                In Stock
+              <div
+                className={`text-sm font-semibold mb-2 ${
+                  product?.status === "instock"
+                    ? "text-green-600"
+                    : "text-red-600"
+                }`}
+              >
+                {product?.status === "instock"
+                  ? "In Stock"
+                  : product?.status === "outofstock"
+                  ? "Out of Stock"
+                  : "Status Unknown"}
               </div>
+
               <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
                 {product.name}
               </h1>
-              <div className="flex items-center mb-4">
-                <div className="flex text-yellow-400">
-                  <span>★</span>
-                  <span>★</span>
-                  <span>★</span>
-                  <span>★</span>
-                  <span>★</span>
-                </div>
-                <span className="ml-2 text-gray-600 text-sm">
-                  (121 reviews)
-                </span>
-              </div>
               <div className="text-3xl font-bold text-gray-900 mb-6">
                 Rs {product.price.toFixed(2)}
               </div>
@@ -152,21 +154,20 @@ const ProductDescription: React.FC = () => {
                 </div>
                 <button
                   onClick={addToCart}
-                  className="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-md"
+                  disabled={product.status === "outofstock"}
+                  className={`flex-1 font-semibold py-2 px-6 rounded-md transition ${
+                    product.status === "outofstock"
+                      ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+                      : "bg-gray-800 hover:bg-gray-700 text-white"
+                  }`}
                 >
-                  Add to Cart
+                  {product.status === "outofstock"
+                    ? "Out of Stock"
+                    : "Add to Cart"}
                 </button>
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Related Products Section */}
-        <div className="mt-16">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            You May Also Like
-          </h2>
-          <FeaturedSection />
         </div>
       </main>
       <Footer />
