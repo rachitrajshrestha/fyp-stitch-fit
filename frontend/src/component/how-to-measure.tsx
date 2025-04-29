@@ -20,55 +20,47 @@ export default function HowToMeasure() {
           </p>
         </div>
 
-        {/* Three measurement imgs */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="flex flex-col items-center">
-            <div className="relative h-64 w-full mb-4 rounded-lg overflow-hidden">
-              <img
-                src={descImg}
-                alt="Bust/Chest measurement"
-                className="object-cover"
-              />
+          {[
+            {
+              title: "Bust/Chest",
+              description:
+                "Measure around the fullest part of your bust/chest, keeping the tape measure parallel to the floor.",
+              img: descImg,
+              alt: "Bust/Chest measurement",
+            },
+            {
+              title: "Waist",
+              description:
+                "Measure around your natural waistline, which is the narrowest part of your torso, typically 1-2 inches above your belly button.",
+              img: descImg1,
+              alt: "Waist measurement",
+            },
+            {
+              title: "Hips",
+              description:
+                "Measure around the fullest part of your hips, approximately 7-9 inches below your waistline.",
+              img: descImg2,
+              alt: "Hip measurement",
+            },
+          ].map((item, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-center shadow-md rounded-lg p-4 bg-white"
+            >
+              <div className="relative h-64 w-full mb-4 rounded-lg overflow-hidden">
+                <img
+                  src={item.img}
+                  alt={item.alt}
+                  className="object-cover w-full h-full"
+                />
+              </div>
+              <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
+              <p className="text-gray-600 text-center">{item.description}</p>
             </div>
-            <h3 className="font-semibold text-lg mb-2">Bust/Chest</h3>
-            <p className="text-gray-600 text-center">
-              Measure around the fullest part of your bust/chest, keeping the
-              tape measure parallel to the floor.
-            </p>
-          </div>
-
-          <div className="flex flex-col items-center">
-            <div className="relative h-64 w-full mb-4 rounded-lg overflow-hidden">
-              <img
-                src={descImg1}
-                alt="Waist measurement"
-                className="object-cover"
-              />
-            </div>
-            <h3 className="font-semibold text-lg mb-2">Waist</h3>
-            <p className="text-gray-600 text-center">
-              Measure around your natural waistline, which is the narrowest part
-              of your torso, typically 1-2 inches above your belly button.
-            </p>
-          </div>
-
-          <div className="flex flex-col items-center">
-            <div className="relative h-64 w-full mb-4 rounded-lg overflow-hidden">
-              <img
-                src={descImg2}
-                alt="Hip measurement"
-                className="object-cover"
-              />
-            </div>
-            <h3 className="font-semibold text-lg mb-2">Hips</h3>
-            <p className="text-gray-600 text-center">
-              Measure around the fullest part of your hips, approximately 7-9
-              inches below your waistline.
-            </p>
-          </div>
+          ))}
         </div>
 
-        {/* Button at the bottom */}
         <div className="text-center">
           <a
             href="/measurements"

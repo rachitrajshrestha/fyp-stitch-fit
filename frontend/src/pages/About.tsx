@@ -2,6 +2,9 @@ import Footer from "../component/Footer";
 import Navbar from "../component/Navbar";
 import banner1 from "../assets/stitchandfit/about/aboutbanner.jpg";
 import banner2 from "../assets/stitchandfit/about/about2.webp";
+import Character1 from "../assets/stitchandfit/Character/character1.jpg";
+import Character2 from "../assets/stitchandfit/Character/character2.jpg";
+import Character3 from "../assets/stitchandfit/Character/character3.jpg";
 
 export default function About() {
   return (
@@ -106,17 +109,17 @@ export default function About() {
                 {
                   name: "Alex Johnson",
                   role: "CEO & Founder",
-                  img: "/placeholder.svg?height=400&width=400",
+                  img: Character1,
                 },
                 {
                   name: "Sam Rivera",
                   role: "CTO",
-                  img: "/placeholder.svg?height=400&width=400",
+                  img: Character2,
                 },
                 {
                   name: "Taylor Chen",
                   role: "Design Director",
-                  img: "/placeholder.svg?height=400&width=400",
+                  img: Character3,
                 },
               ].map((member, index) => (
                 <div key={index} className="text-center">

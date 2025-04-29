@@ -1,15 +1,14 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import heroBanner1 from "../assets/stitchandfit/HeroBanner/hero banner.jpg";
 import CategorySegment from "../component/category-segment";
 import FeaturedSection from "../component/featured-section";
 import Footer from "../component/Footer";
 import HeroBanner from "../component/hero-banner";
 import HowToMeasure from "../component/how-to-measure";
-import ImageSlider from "../component/image-slider";
 import NavBar from "../component/Navbar";
 import ProductDescriptionHeader from "../component/product-description-header";
-import heroBanner1 from "../assets/stitchandfit/HeroBanner/hero banner.jpg";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -39,7 +38,6 @@ const Home = () => {
   useEffect(() => {
     fetchUser();
   }, []);
-  const [theme, setTheme] = useState<"light" | "dark">("light");
 
   return (
     <main className="min-h-screen flex flex-col">

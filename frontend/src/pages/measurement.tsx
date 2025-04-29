@@ -138,65 +138,51 @@ const MeasurementForm: React.FC = () => {
     <>
       <Navbar theme={"light"} setTheme={() => {}} />
       <div className="container">
-        <h1 className="page-title">Your Measurements</h1>
-        <p className="page-description">
-          Take accurate measurements to ensure your custom clothing fits
-          perfectly. Follow the guide below.
-        </p>
-
-        <div className="guide-section">
-          <h2 className="section-title">How to Measure</h2>
-          <div className="guide-cards">
-            <div className="guide-card">
-              <div className="img-container">
+        <h1 className="page-title">How to Measure</h1>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {[
+            {
+              title: "Bust/Chest",
+              description:
+                "Measure around the fullest part of your bust/chest, keeping the tape measure parallel to the floor.",
+              img: descImg,
+              alt: "Bust/Chest measurement",
+            },
+            {
+              title: "Waist",
+              description:
+                "Measure around your natural waistline, which is the narrowest part of your torso, typically 1-2 inches above your belly button.",
+              img: descImg1,
+              alt: "Waist measurement",
+            },
+            {
+              title: "Hips",
+              description:
+                "Measure around the fullest part of your hips, approximately 7-9 inches below your waistline.",
+              img: descImg2,
+              alt: "Hip measurement",
+            },
+          ].map((item, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-center shadow-md rounded-lg p-4 bg-white"
+            >
+              <div className="relative h-64 w-full mb-4 rounded-lg overflow-hidden">
                 <img
-                  src={descImg}
-                  alt="How to measure chest/bust"
-                  className="guide-img"
+                  src={item.img}
+                  alt={item.alt}
+                  className="object-cover w-full h-full"
                 />
               </div>
-              <h3 className="guide-title">1. Chest/Bust</h3>
-              <p className="guide-description">
-                Measure around the fullest part of your chest/bust, keeping the
-                tape measure horizontal.
-              </p>
+              <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
+              <p className="text-gray-600 text-center">{item.description}</p>
             </div>
-
-            <div className="guide-card">
-              <div className="img-container">
-                <img
-                  src={descImg1}
-                  alt="How to measure waist"
-                  className="guide-img"
-                />
-              </div>
-              <h3 className="guide-title">2. Waist</h3>
-              <p className="guide-description">
-                Measure around your natural waistline, keeping the tape measure
-                comfortably loose.
-              </p>
-            </div>
-
-            <div className="guide-card">
-              <div className="img-container">
-                <img
-                  src={descImg2}
-                  alt="How to measure hips"
-                  className="guide-img"
-                />
-              </div>
-              <h3 className="guide-title">3. Hips</h3>
-              <p className="guide-description">
-                Measure around the fullest part of your hips, keeping the tape
-                measure horizontal.
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
 
         <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
           <h2 className="text-3xl font-semibold text-center mb-6">
-            Enter Your Body Measurements (cm)
+            Enter Your Body Measurements (Inch)
           </h2>
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

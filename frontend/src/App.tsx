@@ -1,28 +1,29 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { AdminRoute } from "./component/AdminRoute";
 import { Faliure } from "./component/payment/Faliure";
 import { Payment } from "./component/payment/Payment";
 import { Success } from "./component/payment/Success";
+import About from "./pages/About";
+import AddressDetails from "./pages/AddressDetails";
 import ProductForm from "./pages/admin/AddProduct";
+import AdminProfile from "./pages/admin/AdminProfile";
+import ProductTable from "./pages/admin/AllProducts";
+import { Dashboard } from "./pages/admin/Dashboard";
+import AdminFeedbackPage from "./pages/admin/Feedback";
+import AdminOrders from "./pages/admin/Orders";
 import Cart from "./pages/Cart";
+import OrderSuccess from "./pages/CompleteOrder";
+import { Contact } from "./pages/Contact";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import MeasurementForm from "./pages/measurement";
 import ProductDescription from "./pages/Product-Description";
 import { ProductPage } from "./pages/Product-Page";
+import { UserOrders } from "./pages/Profile/OrderHistory";
 import ProfilePage from "./pages/Profile/ProfilePage";
 import { Register } from "./pages/Register";
 import SearchResults from "./pages/SearchResults";
-import About from "./pages/About";
-import { Contact } from "./pages/Contact";
-import AddressDetails from "./pages/AddressDetails";
-import AdminFeedbackPage from "./pages/admin/Feedback";
-import AdminOrders from "./pages/admin/Orders";
-import { UserOrders } from "./pages/Profile/OrderHistory";
-import { AdminRoute } from "./component/AdminRoute";
-import ProductTable from "./pages/admin/AllProducts";
-import { Dashboard } from "./pages/admin/Dashboard";
-import OrderSuccess from "./pages/CompleteOrder";
 
 const App: React.FC = () => {
   return (
@@ -102,6 +103,14 @@ const App: React.FC = () => {
             element={
               <AdminRoute>
                 <AdminOrders />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/profile"
+            element={
+              <AdminRoute>
+                <AdminProfile />
               </AdminRoute>
             }
           />
