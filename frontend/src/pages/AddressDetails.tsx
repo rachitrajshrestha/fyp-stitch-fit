@@ -7,6 +7,7 @@ import { User, Mail, Phone, Home, MapPinned, Building, X } from "lucide-react";
 import Navbar from "../component/Navbar";
 import Footer from "../component/Footer";
 import esewa from "../assets/esewa-icon.png";
+import axios from "axios";
 
 export default function AddressPage() {
   const location = useLocation();
@@ -71,15 +72,36 @@ export default function AddressPage() {
 
     setIsSubmitting(true);
     try {
+      const result = await saveAddress(formData, token);
+
+      if (!result.success) {
+        alert("Failed to submit address");
+        return;
+      }
+
       if (formData.paymentMethod === "cod") {
-        const result = await saveAddress(formData, token);
-        if (result.success) {
-          navigate("/order-summary");
+        const orderRes = await axios.post(
+          "http://localhost:8081/orders/create-cod-order",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (orderRes.status === 200) {
+          const orderId = orderRes?.data?.orderId;
+          if (!orderId) {
+            console.error("Order ID not found!");
+            return;
+          }
+          navigate(`/order-success?orderId=${orderId}`);
         } else {
-          alert("Failed to submit address");
+          console.error("Order creation failed:", orderRes.data);
         }
       } else {
-        setShowModal(true);
+        setShowModal(true); // for online
       }
     } catch (error) {
       console.error("Error submitting address:", error);

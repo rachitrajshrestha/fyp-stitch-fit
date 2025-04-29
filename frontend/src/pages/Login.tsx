@@ -29,15 +29,15 @@ export default function LoginPage() {
       return;
     }
 
-    if (!/\S+@\S+\.\S+/.test(formValues.email)) {
-      setError("Please enter a valid email address");
-      return;
-    }
+    // if (!/\S+@\S+\.\S+/.test(formValues.email)) {
+    //   setError("Please enter a valid email address");
+    //   return;
+    // }
 
-    if (formValues.password.length < 1) {
-      setError("Password must be at least 6 characters");
-      return;
-    }
+    // if (formValues.password.length < 1) {
+    //   setError("Password must be at least 6 characters");
+    //   return;
+    // }
 
     try {
       const response = await axios.post(

@@ -14,7 +14,6 @@ const getDashboardStats = async (req, res) => {
     const totalFeedbacks = await Feedback.count();
     const totalOrders = await Order.count();
 
-    // Top sellers by total quantity sold
     const topSellers = await OrderItem.findAll({
       attributes: [
         "productId",
@@ -26,7 +25,6 @@ const getDashboardStats = async (req, res) => {
       limit: 5,
     });
 
-    // Most bought products by total quantity sold (all products)
     const mostBoughtProducts = await OrderItem.findAll({
       attributes: [
         "productId",
@@ -35,7 +33,12 @@ const getDashboardStats = async (req, res) => {
       include: [{ model: Product, attributes: ["name"] }],
       group: ["productId", "Product.id"],
       order: [[Sequelize.literal("totalSold"), "DESC"]],
-      limit: 10, // Adjust the limit based on your requirement
+      limit: 10,
+    });
+
+    const users = await User.findAll({
+      attributes: ["id", "username", "email", "address", "phone"],
+      limit: 10,
     });
 
     res.status(200).json({
@@ -48,6 +51,7 @@ const getDashboardStats = async (req, res) => {
         name: item.Product.name,
         totalSold: item.getDataValue("totalSold"),
       })),
+      users,
     });
   } catch (err) {
     console.error("Dashboard stats error:", err);

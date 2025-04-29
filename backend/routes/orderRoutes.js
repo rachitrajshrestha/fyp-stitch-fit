@@ -8,6 +8,11 @@ router.post(
   verifyToken,
   orderController.createOrderAfterPayment
 );
+router.post(
+  "/create-cod-order",
+  verifyToken,
+  orderController.createOrderForCOD
+);
 router.get("/admin", verifyToken, orderController.getAllOrders);
 router.get("/user", verifyToken, orderController.getUserOrders);
 router.get("/user/:orderId", verifyToken, orderController.getOrderById);

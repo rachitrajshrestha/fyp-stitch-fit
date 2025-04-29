@@ -25,19 +25,8 @@ export const Register: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:8081/auth/register",
-        formValues
-      );
-      console.log(response);
-      if (response.status === 201) {
-        navigate("/login");
-      }
-    } catch (err) {
-      console.error(err);
-    }
 
+    // Validation before sending request
     if (!/\S+@\S+\.\S+/.test(formValues.email)) {
       setError("Please enter a valid email address");
       return;
@@ -46,6 +35,21 @@ export const Register: React.FC = () => {
     if (formValues.password.length < 6) {
       setError("Password must be at least 6 characters");
       return;
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8081/auth/register",
+        formValues
+      );
+      console.log(response);
+
+      if (response.status === 201) {
+        navigate("/login");
+      }
+    } catch (err) {
+      console.error("Registration failed:", err);
+      setError("Registration failed. Please try again.");
     }
 
     console.log("Signup with:", formValues);

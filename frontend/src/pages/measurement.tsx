@@ -51,10 +51,6 @@ const MeasurementForm: React.FC = () => {
             if (data.hasMeasurement) {
               setHasOldMeasurement(true);
             }
-
-            console.log("data", data);
-            console.log(hasOldMeasurement);
-            console.log(setHasOldMeasurement);
           }
         } catch (error) {
           console.error("Error checking old measurement:", error);

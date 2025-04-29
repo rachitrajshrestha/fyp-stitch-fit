@@ -83,6 +83,57 @@ const createOrderAfterPayment = async (req, res) => {
   }
 };
 
+const createOrderForCOD = async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    const cart = await Cart.findOne({ where: { userId } });
+    if (!cart) return res.status(400).json({ message: "No cart found" });
+
+    const cartItems = await CartItem.findAll({
+      where: { cartId: cart.id },
+      include: [{ model: Product }],
+    });
+
+    if (!cartItems.length)
+      return res.status(400).json({ message: "Cart is empty" });
+
+    const totalAmount = cartItems.reduce(
+      (sum, item) => sum + item.quantity * item.Product.price,
+      0
+    );
+
+    const order = await Order.create({
+      userId,
+      totalAmount: totalAmount,
+      paymentId: null,
+      status: "pending",
+    });
+
+    const orderItemPromises = cartItems.map((item) =>
+      OrderItem.create({
+        orderId: order.id,
+        productId: item.productId,
+        price: item.Product.price,
+        quantity: item.quantity,
+      })
+    );
+
+    await Promise.all(orderItemPromises);
+    await CartItem.destroy({ where: { cartId: cart.id } });
+
+    res.status(200).json({
+      message: "COD Order created successfully",
+      orderId: order.id,
+    });
+  } catch (err) {
+    console.error("Error in createOrderForCOD:", err);
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: err.message });
+  }
+};
+
 const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.findAll({
@@ -198,6 +249,7 @@ const updateOrderStatus = async (req, res) => {
 
 module.exports = {
   createOrderAfterPayment,
+  createOrderForCOD,
   getAllOrders,
   getUserOrders,
   updateOrderStatus,

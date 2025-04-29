@@ -1,5 +1,7 @@
 "use client";
 
+import type React from "react";
+
 import { useEffect, useState } from "react";
 import AdminLayout from "./AdminLayout";
 import { Bar } from "react-chartjs-2";
@@ -12,6 +14,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { Package, MessageSquare, ShoppingCart, Users } from "lucide-react";
 
 // Register chart elements
 ChartJS.register(
@@ -35,7 +38,16 @@ interface TopSeller {
   Product: Product;
 }
 
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  address: string;
+  phone: number;
+}
+
 interface DashboardStats {
+  users: User[];
   totalUsers: number;
   totalProducts: number;
   totalFeedbacks: number;
@@ -65,8 +77,20 @@ export const Dashboard = () => {
   }, []);
 
   if (loading)
-    return <div className="p-6 text-center">Loading dashboard data...</div>;
-  if (!stats) return <div className="p-6 text-center">No data available</div>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-lg font-medium text-gray-800">
+          Loading dashboard data...
+        </p>
+      </div>
+    );
+
+  if (!stats)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-lg font-medium text-gray-800">No data available</p>
+      </div>
+    );
 
   // Bar chart data
   const chartData = {
@@ -75,103 +99,183 @@ export const Dashboard = () => {
       {
         label: "Total Sold",
         data: stats.mostBoughtProducts.map((product) => product.totalSold),
-        backgroundColor: "#60a5fa", // Simple blue color
-        borderColor: "#3b82f6",
-        borderWidth: 1,
+        backgroundColor: "#1f2937", // gray-800
+        borderWidth: 0,
+        borderRadius: 4,
       },
     ],
   };
 
+  // Only show top 3 sellers
+  const topThreeSellers = stats.topSellers.slice(0, 3);
+
   return (
     <AdminLayout>
-      <div className="p-6 max-w-6xl mx-auto">
-        <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
+      <div className="p-6 max-w-7xl mx-auto">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">
+          Admin Dashboard
+        </h1>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <StatCard title="Users" value={stats.totalUsers} />
-          <StatCard title="Products" value={stats.totalProducts} />
-          <StatCard title="Feedbacks" value={stats.totalFeedbacks} />
-          <StatCard title="Orders" value={stats.totalOrders} />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <StatCard
+            title="Users"
+            value={stats.totalUsers}
+            icon={<Users className="h-5 w-5" />}
+          />
+          <StatCard
+            title="Products"
+            value={stats.totalProducts}
+            icon={<Package className="h-5 w-5" />}
+          />
+          <StatCard
+            title="Feedbacks"
+            value={stats.totalFeedbacks}
+            icon={<MessageSquare className="h-5 w-5" />}
+          />
+          <StatCard
+            title="Orders"
+            value={stats.totalOrders}
+            icon={<ShoppingCart className="h-5 w-5" />}
+          />
         </div>
 
-        {/* Top Sellers Section */}
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-3">Top Selling Products</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {stats.topSellers.map((seller) => (
-              <div
-                key={seller.productId}
-                className="flex items-center gap-4 p-4 border rounded-lg bg-white"
-              >
-                <img
-                  src={seller.Product.imageUrl || "/placeholder.png"}
-                  alt={seller.Product.name}
-                  className="w-16 h-16 object-cover rounded"
-                />
-                <div>
-                  <p className="font-medium">{seller.Product.name}</p>
-                  <p className="text-gray-600">Sold: {seller.totalSold}</p>
-                  <p className="text-gray-600">
-                    Price: Rs {seller.Product.price}
-                  </p>
-                </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          {/* Top Sellers Section */}
+          <div className="lg:col-span-1">
+            <div className="bg-white border border-gray-200 rounded-lg">
+              <div className="p-4 border-b border-gray-200">
+                <h2 className="text-lg font-medium text-gray-800">
+                  Top Selling Products
+                </h2>
               </div>
-            ))}
+              <div className="p-4 space-y-4">
+                {topThreeSellers.map((seller, index) => (
+                  <div
+                    key={seller.productId}
+                    className="flex items-start gap-3"
+                  >
+                    <div className="relative">
+                      <div className="w-14 h-14 rounded-md overflow-hidden bg-gray-100 flex items-center justify-center">
+                        <img
+                          src={
+                            `http://localhost:8081/${seller.Product.imageUrl}` ||
+                            "/placeholder.png"
+                          }
+                          alt={seller.Product.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="absolute -top-2 -left-2 w-5 h-5 rounded-full bg-gray-800 text-white flex items-center justify-center text-xs font-bold">
+                        {index + 1}
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-medium text-gray-800">
+                        {seller.Product.name}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        Sold: {seller.totalSold}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        Price: Rs {seller.Product.price}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Bar Chart Section */}
+          <div className="lg:col-span-2">
+            <div className="bg-white border border-gray-200 rounded-lg">
+              <div className="p-4 border-b border-gray-200">
+                <h2 className="text-lg font-medium text-gray-800">
+                  Most Bought Products
+                </h2>
+              </div>
+              <div className="p-4">
+                <Bar
+                  data={chartData}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: {
+                        display: false,
+                      },
+                    },
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                        grid: {
+                          color: "rgba(0, 0, 0, 0.05)",
+                        },
+                      },
+                      x: {
+                        grid: {
+                          display: false,
+                        },
+                      },
+                    },
+                  }}
+                  height={250}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Bar Chart Section */}
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-3">Most Bought Products</h2>
-          <div className="bg-white p-4 border rounded-lg">
-            <Bar
-              data={chartData}
-              options={{
-                responsive: true,
-                plugins: {
-                  legend: {
-                    position: "top",
-                  },
-                  title: {
-                    display: false,
-                  },
-                },
-                scales: {
-                  y: {
-                    beginAtZero: true,
-                  },
-                },
-              }}
-            />
+        <div className="bg-white border border-gray-200 rounded-lg">
+          <div className="p-4 border-b border-gray-200">
+            <h2 className="text-lg font-medium text-gray-800">All Users</h2>
           </div>
-        </div>
-
-        {/* Product Table */}
-        <div>
-          <h2 className="text-xl font-semibold mb-3">All Products</h2>
-          <div className="overflow-x-auto bg-white border rounded-lg">
-            <table className="min-w-full">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-4 py-3 text-left text-gray-700">Product</th>
-                  <th className="px-4 py-3 text-left text-gray-700">Price</th>
-                  <th className="px-4 py-3 text-left text-gray-700">Sales</th>
-                  <th className="px-4 py-3 text-left text-gray-700">Image</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Id
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    User
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Email
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Address
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Phone no.
+                  </th>
                 </tr>
               </thead>
-              <tbody className="divide-y">
-                {stats.topSellers.map((seller) => (
-                  <tr key={seller.productId}>
-                    <td className="px-4 py-3">{seller.Product.name}</td>
-                    <td className="px-4 py-3">Rs {seller.Product.price}</td>
-                    <td className="px-4 py-3">{seller.totalSold}</td>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {stats.users.map((user, index) => (
+                  <tr key={user.id}>
+                    <td className="px-4 py-3 text-sm text-gray-800">
+                      {index + 1}
+                    </td>
                     <td className="px-4 py-3">
-                      <img
-                        src={seller.Product.imageUrl || "/placeholder.png"}
-                        alt={seller.Product.name}
-                        className="w-10 h-10 object-cover rounded"
-                      />
+                      <div className="flex items-center">
+                        <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-gray-800 text-sm">
+                          {user.username.charAt(0).toUpperCase()}
+                        </div>
+                        <span className="ml-2 text-sm text-gray-800">
+                          {user.username}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-600">
+                      {user.email}
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-600">
+                      {user.address}
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-600">
+                      {user.phone}
                     </td>
                   </tr>
                 ))}
@@ -184,9 +288,22 @@ export const Dashboard = () => {
   );
 };
 
-const StatCard = ({ title, value }: { title: string; value: number }) => (
-  <div className="p-4 bg-white border rounded-lg text-center">
-    <p className="text-gray-600">{title}</p>
-    <p className="text-xl font-semibold mt-1">{value}</p>
+const StatCard = ({
+  title,
+  value,
+  icon,
+}: {
+  title: string;
+  value: number;
+  icon: React.ReactNode;
+}) => (
+  <div className="bg-white border border-gray-200 rounded-lg p-4">
+    <div className="flex items-center">
+      <div className="p-2 rounded-md bg-gray-100 text-gray-800">{icon}</div>
+      <div className="ml-3">
+        <p className="text-sm text-gray-600">{title}</p>
+        <p className="text-xl font-bold text-gray-800">{value}</p>
+      </div>
+    </div>
   </div>
 );

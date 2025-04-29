@@ -19,7 +19,6 @@ export const Success = () => {
       const decoded = JSON.parse(atob(encodedData));
 
       handlePaymentSuccess(decoded);
-      console.log("hya vayo?");
     } catch (err) {
       console.error("Error handling payment success:", err);
     }
